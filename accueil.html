@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Énergie Renouvelable Photovoltaïque – LPE E2I – UCD</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <style>
+    .bg-ucd-blue { background-color: #1e40af; }
+    .bg-ucd-blue-dark { background-color: #0f172a; }
+    .text-ucd-blue { color: #1e40af; }
+    .text-ucd-gold { color: #f59e0b; }
+    .active-nav {
+      background-color: white !important;
+      color: #1e40af !important;
+      font-weight: 700 !important;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- Top bar institutionnelle -->
+  <div class="bg-ucd-blue-dark text-white py-1.5 px-4 text-center text-xs sm:text-sm font-medium">
+    <span>Université Chouaib Doukkali</span>
+    <span class="mx-2 opacity-50">|</span>
+    <span>Faculté des Sciences El Jadida</span>
+    <span class="mx-2 opacity-50">|</span>
+    <span>Département de Physique • LPE : Électronique et Informatique Industrielle (E2I)</span>
+  </div>
+
+  <!-- Navbar -->
+  <header class="bg-ucd-blue text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div onclick="navigateTo('home')" class="flex items-center gap-3 cursor-pointer group">
+        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow group-hover:scale-105 transition-transform">
+          <span class="text-ucd-blue font-black text-xl">☀️</span>
+        </div>
+        <div>
+          <div class="font-bold text-base leading-tight">Énergie Renouvelable Photovoltaïque</div>
+          <div class="text-blue-200 text-xs leading-tight">LPE : Électronique et Informatique Industrielle (E2I)</div>
+        </div>
+      </div>
+
+      <nav class="flex items-center gap-1 sm:gap-2">
+        <button id="nav-home" onclick="navigateTo('home')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition active-nav">
+          🏠 Accueil
+        </button>
+        <button id="nav-qcm" onclick="navigateTo('qcm')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium text-blue-100 hover:text-white hover:bg-blue-700 transition">
+          📝 Évaluation QCM
+        </button>
+        <button id="nav-cours" onclick="navigateTo('cours')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium text-blue-100 hover:text-white hover:bg-blue-700 transition">
+          📚 Travaux Dirigés (TD)
+        </button>
+        <button id="nav-tp" onclick="navigateTo('tp')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-medium text-blue-100 hover:text-white hover:bg-blue-700 transition">
+          🔬 Travaux Pratiques (TP)
+        </button>
+        <button id="nav-admin" onclick="navigateTo('admin')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-bold text-amber-300 hover:text-white hover:bg-amber-600 transition border border-amber-400 border-opacity-40">
+          🔐 Admin
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENEUR DES PAGES -->
+  <main class="flex-1">
+
+    <!-- ========================================== -->
+    <!-- 1. PAGE ACCUEIL                           -->
+    <!-- ========================================== -->
+    <div id="page-home" class="page-view">
+      <!-- Hero -->
+      <section class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-800 text-white py-16 px-4 text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+          <div class="inline-block bg-white bg-opacity-15 rounded-full px-5 py-1.5 text-xs font-semibold mb-6 backdrop-blur-md border border-white border-opacity-20 text-blue-100">
+            🎓 Année universitaire 2026–2027 • LPE : Électronique et Informatique Industrielle (E2I)
+          </div>
+          <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">
+            Énergie Renouvelable <span class="text-amber-400 block mt-1">Photovoltaïque</span>
+          </h1>
+          <p class="text-lg md:text-xl text-blue-100 mb-8 font-medium">
+            Faculté des Sciences El Jadida – Université Chouaib Doukkali
+          </p>
+          <div class="flex justify-center">
+            <button onclick="navigateTo('qcm')" class="bg-white text-blue-900 hover:bg-blue-50 font-black px-8 py-4 rounded-2xl shadow-xl transition transform hover:-translate-y-1 flex items-center gap-3 text-lg">
+              <span>📝</span> Passer l'évaluation QCM Photovoltaïque (20 questions) →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Synthèse du cours PV -->
+      <section class="bg-white border-b border-gray-100 py-8 px-4">
+        <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-blue-50 text-blue-800 rounded-2xl p-5 text-center border border-blue-100">
+            <div class="text-3xl mb-1">⚡</div>
+            <div class="text-2xl font-black mb-1">581,2 Wc</div>
+            <div class="text-xs font-semibold text-blue-600 uppercase tracking-wide">Puissance Crête (Pc)</div>
+          </div>
+          <div class="bg-purple-50 text-purple-800 rounded-2xl p-5 text-center border border-purple-100">
+            <div class="text-3xl mb-1">🔋</div>
+            <div class="text-2xl font-black mb-1">265,6 Ah</div>
+            <div class="text-xs font-semibold text-purple-600 uppercase tracking-wide">Parc Batteries (24V)</div>
+          </div>
+          <div class="bg-green-50 text-green-800 rounded-2xl p-5 text-center border border-green-100">
+            <div class="text-3xl mb-1">☀️</div>
+            <div class="text-2xl font-black mb-1">2S2P (4 Panneaux)</div>
+            <div class="text-xs font-semibold text-green-600 uppercase tracking-wide">Couplage Champ PV</div>
+          </div>
+          <div class="bg-amber-50 text-amber-800 rounded-2xl p-5 text-center border border-amber-100">
+            <div class="text-3xl mb-1">⚙️</div>
+            <div class="text-2xl font-black mb-1">MPPT & Pur Sinus</div>
+            <div class="text-xs font-semibold text-amber-600 uppercase tracking-wide">Régulation & Conversion</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 Portails -->
+      <section class="py-14 px-4 bg-gray-50">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-10">
+            <h2 class="text-3xl font-black text-gray-900">Espaces Pédagogiques</h2>
+            <p class="text-gray-500 text-sm mt-1">Filière LPE : Électronique et Informatique Industrielle (E2I)</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- QCM Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-6 text-white text-center">
+                <div class="text-5xl mb-2">📝</div>
+                <h3 class="text-xl font-bold">Évaluation QCM PV</h3>
+              </div>
+              <div class="p-6 flex-1 flex flex-col justify-between">
+                <p class="text-gray-600 text-sm mb-4">
+                  20 questions exclusives sur le dimensionnement photovoltaïque (cas El Jadida, Ec = 1700 Wh/j, Pc, 2S2P, régulateur MPPT/PWM, batteries, onduleur, câbles).
+                </p>
+                <button onclick="navigateTo('qcm')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                  Lancer le QCM Photovoltaïque →
+                </button>
+              </div>
+            </div>
+
+            <!-- TD Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div class="bg-gradient-to-br from-purple-600 to-purple-800 p-6 text-white text-center">
+                <div class="text-5xl mb-2">📚</div>
+                <h3 class="text-xl font-bold">Travaux Dirigés (TD)</h3>
+              </div>
+              <div class="p-6 flex-1 flex flex-col justify-between">
+                <p class="text-gray-600 text-sm mb-4">
+                  Tableau de gestion des feuilles de TD au format PDF. Téléversez et téléchargez exclusivement des fichiers .pdf pour les séries d'exercices.
+                </p>
+                <button onclick="navigateTo('cours')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                  Ouvrir le tableau TD PDF →
+                </button>
+              </div>
+            </div>
+
+            <!-- TP Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div class="bg-gradient-to-br from-emerald-600 to-emerald-800 p-6 text-white text-center">
+                <div class="text-5xl mb-2">🔬</div>
+                <h3 class="text-xl font-bold">Travaux Pratiques (TP)</h3>
+              </div>
+              <div class="p-6 flex-1 flex flex-col justify-between">
+                <p class="text-gray-600 text-sm mb-4">
+                  Tableau des protocoles et énoncés de TP au format PDF uniquement. Zone d'upload sécurisée réservée aux fichiers PDF.
+                </p>
+                <button onclick="navigateTo('tp')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                  Ouvrir le tableau TP PDF →
+                </button>
+              </div>
+            </div>
+
+            <!-- Admin Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div class="bg-gradient-to-br from-slate-700 to-indigo-900 p-6 text-white text-center">
+                <div class="text-5xl mb-2">🔐</div>
+                <h3 class="text-xl font-bold">Admin</h3>
+              </div>
+              <div class="p-6 flex-1 flex flex-col justify-between">
+                <p class="text-gray-600 text-sm mb-4">
+                  Espace enseignant pour stocker les noms des étudiants et leurs notes, calculer les moyennes et exporter le relevé complet vers Excel.
+                </p>
+                <button onclick="navigateTo('admin')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                  Ouvrir l'Espace Admin →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. PAGE ÉVALUATION QCM (BASÉ SUR LE DOCUMENT) -->
+    <!-- ========================================== -->
+    <div id="page-qcm" class="page-view hidden py-10 px-4">
+      <div class="max-w-3xl mx-auto">
+
+        <!-- Écran de démarrage -->
+        <div id="qcm-intro" class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-lg">
+          <div class="bg-gradient-to-r from-blue-700 to-indigo-700 p-8 text-white text-center">
+            <div class="text-5xl mb-3">☀️</div>
+            <h1 class="text-3xl font-black mb-1">Évaluation : Énergie Renouvelable Photovoltaïque</h1>
+            <p class="text-blue-200 text-sm">LPE : Électronique et Informatique Industrielle (E2I) – UCD El Jadida</p>
+          </div>
+          <div class="p-8">
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 text-xs text-blue-900 leading-relaxed">
+              📌 <strong>Sujet de l'épreuve :</strong> Ce QCM de 20 questions porte strictement sur le cours de <em>Dimensionnement d'une installation photovoltaïque autonome</em> (Étude de cas El Jadida, calcul du besoin Ec, puissance crête Pc, couplage 2S2P, parc de batteries 24V, régulateurs PWM/MPPT, onduleur pur sinus, dimensionnement des câbles et protections).
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+              <div class="bg-gray-50 rounded-xl p-4 text-center border">
+                <div class="text-2xl font-bold text-ucd-blue">20</div>
+                <div class="text-xs text-gray-500 uppercase mt-1">Questions</div>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-4 text-center border">
+                <div class="text-2xl font-bold text-ucd-blue">60 min</div>
+                <div class="text-xs text-gray-500 uppercase mt-1">Durée</div>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-4 text-center border">
+                <div class="text-2xl font-bold text-ucd-blue">1 pt</div>
+                <div class="text-xs text-gray-500 uppercase mt-1">Par question</div>
+              </div>
+              <div class="bg-gray-50 rounded-xl p-4 text-center border">
+                <div class="text-2xl font-bold text-emerald-600">Corrigé</div>
+                <div class="text-xs text-gray-500 uppercase mt-1">Détaillé</div>
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Nom de l'étudiant (Optionnel) :</label>
+              <input id="qcm-student-name" type="text" placeholder="Entrez votre nom complet..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <button onclick="startQCM()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition text-base">
+              🚀 Démarrer l'épreuve QCM
+            </button>
+          </div>
+        </div>
+
+        <!-- Interface de passage du QCM -->
+        <div id="qcm-test" class="hidden">
+          <div class="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm mb-6 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <span id="qcm-chapter-badge" class="px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-xs font-bold">
+                Thème
+              </span>
+              <span class="text-sm font-bold text-gray-600">Question <span id="qcm-current-num">1</span> / 20</span>
+            </div>
+            <div class="flex items-center gap-2 bg-red-50 text-red-700 px-4 py-1.5 rounded-xl font-bold font-mono text-sm border border-red-200">
+              <span>⏱️ Temps :</span>
+              <span id="qcm-timer">60:00</span>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-md mb-6">
+            <h2 id="qcm-question-text" class="text-lg md:text-xl font-bold text-gray-800 mb-6 leading-relaxed">
+              Chargement...
+            </h2>
+            <div id="qcm-options" class="space-y-3"></div>
+          </div>
+
+          <div class="flex items-center justify-between gap-4 mb-8">
+            <button id="btn-prev" onclick="prevQuestion()" class="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 disabled:opacity-40 transition">
+              ← Précédente
+            </button>
+            <div class="flex gap-2">
+              <button id="btn-next" onclick="nextQuestion()" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition">
+                Suivante →
+              </button>
+              <button onclick="confirmSubmitQCM()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow transition">
+                ✅ Valider l'évaluation
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
+            <div class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Grille des 20 questions :</div>
+            <div id="qcm-pills" class="flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+
+        <!-- Résultat & Corrigé détaillé -->
+        <div id="qcm-results" class="hidden">
+          <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xl mb-8">
+            <div id="result-header" class="p-8 text-white text-center">
+              <div id="result-icon" class="text-5xl mb-2">🎉</div>
+              <h2 class="text-2xl font-black">Résultats de l'évaluation</h2>
+              <p id="result-student" class="text-blue-100 text-sm mt-1"></p>
+            </div>
+            <div class="p-6 text-center">
+              <div class="text-5xl font-black text-gray-800 mb-2">
+                <span id="result-score">0</span> <span class="text-2xl text-gray-400">/ 20</span>
+              </div>
+              <div id="result-badge" class="inline-block px-4 py-1.5 rounded-full text-sm font-bold mb-4"></div>
+              <div id="qcm-admin-sync-banner" class="max-w-xl mx-auto mb-6 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+                <span id="qcm-admin-sync-text">✅ Votre note est automatiquement enregistrée dans l'Espace Admin.</span>
+                <button onclick="navigateTo('admin')" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition whitespace-nowrap shadow flex items-center gap-1.5">
+                  <span>🔐</span> Voir le relevé Admin →
+                </button>
+              </div>
+              <div class="flex justify-center gap-4">
+                <button onclick="resetQCM()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow transition">
+                  🔄 Recommencer
+                </button>
+                <button onclick="navigateTo('home')" class="px-6 py-2.5 border border-gray-300 hover:bg-gray-100 text-gray-700 font-bold rounded-xl transition">
+                  🏠 Accueil
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-md">
+            <h3 class="text-xl font-black text-gray-800 mb-6">📋 Corrigé détaillé et explications</h3>
+            <div id="qcm-corrections" class="space-y-4"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 3. PAGE TD : TABLEAU D'UPLOAD PDF SEULEMENT-->
+    <!-- ========================================== -->
+    <div id="page-cours" class="page-view hidden py-10 px-4">
+      <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-purple-700 to-indigo-800 text-white rounded-2xl p-8 mb-8 shadow-md">
+          <div class="flex items-center gap-4 mb-2">
+            <span class="text-4xl">📚</span>
+            <div>
+              <h1 class="text-3xl font-black">Travaux Dirigés (TD)</h1>
+              <p class="text-purple-200 text-sm">Téléversement et gestion des fichiers : PDF, MATLAB, Simulink et Excel</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone d'Upload avec zone de saisie du nom libre -->
+        <div class="bg-white rounded-2xl border border-purple-200 p-6 mb-8 shadow-sm">
+          <h2 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+            <span>📤</span> Téléverser un fichier pour les TD
+          </h2>
+          <p class="text-xs text-gray-500 mb-4">
+            Formats acceptés : <strong>PDF (.pdf)</strong>, <strong>MATLAB (.m)</strong>, <strong>Simulink (.slx)</strong> et <strong>Excel (.xlsx, .xls)</strong>.
+          </p>
+
+          <form onsubmit="handleUploadTD(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Nom / Titre du fichier (saisi par vous-même) *</label>
+                <input id="td-upload-title" type="text" required placeholder="Tapez ici le nom ou titre que vous souhaitez donner..." class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Choisir le fichier * (.pdf, .m, .slx, .xlsx)</label>
+                <input id="td-upload-file" type="file" required accept=".pdf,.m,.slx,.mdl,.xlsx,.xls" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+              </div>
+            </div>
+            <div class="flex justify-end gap-2">
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs transition shadow flex items-center gap-2">
+                <span>➕</span> Ajouter au tableau TD
+              </button>
+            </div>
+          </form>
+          <div id="td-upload-msg" class="hidden mt-3 p-3 rounded-xl text-xs font-semibold"></div>
+        </div>
+
+        <!-- Tableau des fichiers TD -->
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+          <div class="p-4 bg-gray-50 border-b flex items-center justify-between">
+            <h3 class="font-bold text-sm text-gray-800">📄 Tableau des fichiers TD téléversés</h3>
+            <span id="td-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">0 fichier</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-600">
+              <thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs border-b">
+                <tr>
+                  <th class="p-3.5">Nom saisi</th>
+                  <th class="p-3.5">Fichier source</th>
+                  <th class="p-3.5">Format</th>
+                  <th class="p-3.5">Date</th>
+                  <th class="p-3.5">Taille</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="td-table-body" class="divide-y divide-gray-100">
+                <!-- Rempli par JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 4. PAGE TP : UPLOAD PDF, MATLAB, SIMULINK, EXCEL -->
+    <!-- ========================================== -->
+    <div id="page-tp" class="page-view hidden py-10 px-4">
+      <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white rounded-2xl p-8 mb-8 shadow-md">
+          <div class="flex items-center gap-4 mb-2">
+            <span class="text-4xl">🔬</span>
+            <div>
+              <h1 class="text-3xl font-black">Travaux Pratiques (TP)</h1>
+              <p class="text-emerald-200 text-sm">Téléversement et gestion des protocoles et modèles : PDF, MATLAB, Simulink et Excel</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone d'Upload avec zone de saisie du nom libre -->
+        <div class="bg-white rounded-2xl border border-emerald-200 p-6 mb-8 shadow-sm">
+          <h2 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+            <span>📤</span> Téléverser un fichier pour les TP
+          </h2>
+          <p class="text-xs text-gray-500 mb-4">
+            Formats acceptés : <strong>PDF (.pdf)</strong>, <strong>MATLAB (.m)</strong>, <strong>Simulink (.slx)</strong> et <strong>Excel (.xlsx, .xls)</strong>.
+          </p>
+
+          <form onsubmit="handleUploadTP(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Nom / Titre du TP (saisi par vous-même) *</label>
+                <input id="tp-upload-title" type="text" required placeholder="Tapez ici le nom ou titre que vous souhaitez donner..." class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Choisir le fichier * (.pdf, .m, .slx, .xlsx)</label>
+                <input id="tp-upload-file" type="file" required accept=".pdf,.m,.slx,.mdl,.xlsx,.xls" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+              </div>
+            </div>
+            <div class="flex justify-end gap-2">
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition shadow flex items-center gap-2">
+                <span>➕</span> Ajouter au tableau TP
+              </button>
+            </div>
+          </form>
+          <div id="tp-upload-msg" class="hidden mt-3 p-3 rounded-xl text-xs font-semibold"></div>
+        </div>
+
+        <!-- Tableau des fichiers TP -->
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+          <div class="p-4 bg-gray-50 border-b flex items-center justify-between">
+            <h3 class="font-bold text-sm text-gray-800">📄 Tableau des fichiers TP téléversés</h3>
+            <span id="tp-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">0 fichier</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-600">
+              <thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs border-b">
+                <tr>
+                  <th class="p-3.5">Nom saisi</th>
+                  <th class="p-3.5">Fichier source</th>
+                  <th class="p-3.5">Format</th>
+                  <th class="p-3.5">Date</th>
+                  <th class="p-3.5">Taille</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tp-table-body" class="divide-y divide-gray-100">
+                <!-- Rempli par JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 5. PAGE ADMIN (GESTION DES NOTES) -->
+    <!-- ========================================== -->
+    <div id="page-admin" class="page-view hidden py-10 px-4">
+      <div class="max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-slate-800 via-indigo-900 to-blue-900 text-white rounded-2xl p-8 mb-8 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-white bg-opacity-10 rounded-2xl flex items-center justify-center text-3xl backdrop-blur shadow-inner">
+              🔐
+            </div>
+            <div>
+              <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-900 mb-2">
+                Espace Enseignant / Admin
+              </div>
+              <h1 class="text-3xl font-black">Gestion des Étudiants et des Notes</h1>
+              <p class="text-blue-200 text-sm">LPE : Électronique et Informatique Industrielle (E2I) • Module Énergie Renouvelable Photovoltaïque</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="exportGradesCSV()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2 transition">
+              <span>📥</span> Exporter vers Excel (CSV)
+            </button>
+            <button onclick="window.print()" class="px-4 py-2.5 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-xl text-xs font-bold backdrop-blur transition flex items-center gap-2">
+              <span>🖨️</span> Imprimer
+            </button>
+            <button onclick="lockAdminSession()" class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2 transition" title="Verrouiller la session Admin">
+              <span>🔒</span> Verrouiller
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black">
+              👥
+            </div>
+            <div>
+              <div id="kpi-total-students" class="text-2xl font-black text-gray-800">0</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Étudiants enregistrés</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-black">
+              📈
+            </div>
+            <div>
+              <div id="kpi-avg-score" class="text-2xl font-black text-gray-800">0 / 20</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Moyenne de la promo</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl font-black">
+              🎯
+            </div>
+            <div>
+              <div id="kpi-success-rate" class="text-2xl font-black text-gray-800">0%</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Taux de réussite (≥ 10)</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl font-black">
+              🏆
+            </div>
+            <div>
+              <div id="kpi-max-score" class="text-2xl font-black text-gray-800">0 / 20</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Note maximale</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulaire d'ajout / modification d'une note -->
+        <div class="bg-white rounded-2xl border border-indigo-200 p-6 mb-8 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+              <span>✍️</span> <span id="admin-form-title">Enregistrer un étudiant et sa note</span>
+            </h2>
+            <span class="text-xs text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full font-medium">
+              ⚡ Les passages du QCM en ligne sont également sauvegardés ici automatiquement
+            </span>
+          </div>
+
+          <form id="admin-grade-form" onsubmit="handleSaveGrade(event)" class="space-y-4">
+            <input type="hidden" id="admin-record-id" value="">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="md:col-span-2">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Nom complet de l'étudiant *</label>
+                <input
+                  id="admin-student-name"
+                  type="text"
+                  required
+                  placeholder="Ex : Oussama Benani"
+                  class="w-full px-3 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Note sur 20 *</label>
+                <input
+                  id="admin-student-score"
+                  type="number"
+                  min="0"
+                  max="20"
+                  step="0.25"
+                  required
+                  placeholder="Ex : 15.5"
+                  class="w-full px-3 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-indigo-900"
+                >
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Type d'évaluation *</label>
+                <select
+                  id="admin-exam-type"
+                  class="w-full px-3 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white"
+                >
+                  <option value="QCM Photovoltaïque">QCM Photovoltaïque</option>
+                  <option value="Contrôle Continu">Contrôle Continu</option>
+                  <option value="Examen Final">Examen Final</option>
+                  <option value="Banc d'essai TP">Banc d'essai TP</option>
+                  <option value="Projet TD">Projet TD</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+              <div class="md:col-span-3">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Remarque / Commentaire pédagogique (Optionnel)</label>
+                <input
+                  id="admin-comment"
+                  type="text"
+                  placeholder="Ex : Très bonne assimilation du dimensionnement autonome et des batteries"
+                  class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+              </div>
+              <div class="flex gap-2">
+                <button
+                  type="submit"
+                  id="admin-submit-btn"
+                  class="flex-1 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5"
+                >
+                  <span>💾</span> Enregistrer la note
+                </button>
+                <button
+                  type="button"
+                  id="admin-cancel-btn"
+                  onclick="resetGradeForm()"
+                  class="hidden py-2.5 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-xs rounded-xl transition"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div id="admin-form-msg" class="hidden mt-3 p-3 rounded-xl text-xs font-bold"></div>
+        </div>
+
+        <!-- Tableau des Notes & Filtres -->
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+          <div class="p-5 bg-gray-50 border-b flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <h3 class="font-bold text-base text-gray-800">📋 Relevé des notes – Filière LPE E2I</h3>
+              <span id="admin-table-badge" class="px-3 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">0 note(s)</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+              <!-- Search bar -->
+              <div class="relative flex-1 md:w-64">
+                <input
+                  id="admin-search-input"
+                  type="text"
+                  oninput="renderAdminTable()"
+                  placeholder="Rechercher un étudiant..."
+                  class="w-full pl-9 pr-3 py-1.5 border rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+                <span class="absolute left-3 top-2 text-xs text-gray-400">🔍</span>
+              </div>
+
+              <!-- Filter select -->
+              <select
+                id="admin-filter-status"
+                onchange="renderAdminTable()"
+                class="px-3 py-1.5 border rounded-xl text-xs bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none font-medium"
+              >
+                <option value="all">Tous les statuts</option>
+                <option value="passed">Validé (≥ 10/20)</option>
+                <option value="failed">Ajourné (&lt; 10/20)</option>
+              </select>
+
+              <button onclick="clearAllGrades()" class="px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 border border-red-200 rounded-xl transition font-semibold" title="Réinitialiser les données">
+                🔄 Réinitialiser
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-600">
+              <thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs border-b">
+                <tr>
+                  <th class="p-3.5">Étudiant</th>
+                  <th class="p-3.5">Évaluation</th>
+                  <th class="p-3.5 text-center">Note / 20</th>
+                  <th class="p-3.5 text-center">Pourcentage</th>
+                  <th class="p-3.5">Décision / Statut</th>
+                  <th class="p-3.5">Date & Heure</th>
+                  <th class="p-3.5">Observation</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body" class="divide-y divide-gray-100">
+                <!-- Rempli par JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Authentification Admin (Mot de passe protégé) -->
+  <div id="admin-auth-modal" class="fixed inset-0 bg-slate-900 bg-opacity-70 hidden flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl border border-gray-100 text-center relative">
+      <div class="w-16 h-16 bg-amber-100 text-amber-700 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-4 shadow-inner">
+        🔐
+      </div>
+      <h3 class="text-2xl font-black text-gray-900 mb-1">Accès Sécurisé Enseignant</h3>
+      <p class="text-xs text-gray-500 mb-6">
+        Cet espace est strictement réservé à l'enseignant pour la gestion des notes et des étudiants.
+      </p>
+
+      <form onsubmit="handleAdminPasswordSubmit(event)" class="space-y-4">
+        <div class="text-left">
+          <label for="admin-pwd-input" class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+            Mot de passe administrateur
+          </label>
+          <input
+            type="password"
+            id="admin-pwd-input"
+            autocomplete="current-password"
+            placeholder="Entrez le mot de passe..."
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+            required
+          />
+        </div>
+        <div id="admin-auth-error" class="hidden text-xs font-bold text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-200 text-left">
+          ⚠️ Mot de passe incorrect. Veuillez réessayer.
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button
+            type="button"
+            onclick="closeAdminAuthModal()"
+            class="w-1/2 py-2.5 px-4 border border-gray-300 hover:bg-gray-100 text-gray-700 font-bold rounded-xl text-sm transition"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            class="w-1/2 py-2.5 px-4 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-sm shadow transition"
+          >
+            Déverrouiller →
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal consultation document PDF -->
+  <div id="doc-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl text-center">
+      <div class="text-4xl mb-3">📄</div>
+      <h3 id="modal-title" class="text-xl font-bold text-gray-800 mb-2">Document PDF</h3>
+      <p id="modal-desc" class="text-sm text-gray-600 mb-6"></p>
+      <div class="p-4 bg-purple-50 border border-purple-200 rounded-xl text-xs text-purple-900 mb-6 text-left">
+        ✅ <strong>Format validé :</strong> Document conforme PDF pour la filière LPE : Électronique et Informatique Industrielle (E2I).
+      </div>
+      <button onclick="closeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition">
+        Fermer
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-ucd-blue-dark text-white py-10 px-4 mt-auto">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+      <div class="flex items-center gap-2">
+        <span class="text-white font-bold text-base">☀️</span>
+        <span>Énergie Renouvelable Photovoltaïque – LPE : Électronique et Informatique Industrielle (E2I) – UCD (2026–2027)</span>
+      </div>
+      <div class="flex gap-4">
+        <button onclick="navigateTo('home')" class="hover:text-white">Accueil</button>
+        <button onclick="navigateTo('qcm')" class="hover:text-white">QCM</button>
+        <button onclick="navigateTo('cours')" class="hover:text-white">Tableau TD</button>
+        <button onclick="navigateTo('tp')" class="hover:text-white">Tableau TP</button>
+        <button onclick="navigateTo('admin')" class="hover:text-white text-amber-300 font-bold">🔐 Admin</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIQUE INTERACTIVE -->
+  <script>
+    // ==========================================
+    // 20 QUESTIONS QCM STRICTEMENT BASÉES SUR LE FICHIER FOURNI
+    // ==========================================
+    const allQuestions = [
+      {
+        id: 1,
+        theme: "Bilan Énergétique",
+        text: "Dans le dimensionnement d'une installation photovoltaïque autonome, comment se calcule l'énergie totale consommée par jour Ec (besoin journalier Bj) ?",
+        a: "Ec = Σ (Pi × ti), où Pi est la puissance unitaire de chaque appareil et ti sa durée d'utilisation journalière",
+        b: "Ec = Σ (Pi / ti) pour chaque appareil",
+        c: "Ec = Puissance totale PT × 24 heures",
+        d: "Ec = Puissance crête Pc × Ir,moy",
+        correct: "A",
+        exp: "L'énergie consommée par jour (Ec en Wh/j) est la somme des produits de la puissance de chaque appareil par sa durée de fonctionnement : Ec = P1×t1 + P2×t2 + ... + Pn×tn."
+      },
+      {
+        id: 2,
+        theme: "Conversion de l'énergie solaire",
+        text: "En quoi consiste le principe fondamental de conversion de l'énergie solaire par les cellules photovoltaïques ?",
+        a: "Conversion directe du rayonnement solaire (flux de photons) en énergie électrique sous forme de courant continu (DC) par effet photovoltaïque",
+        b: "Transformation de la chaleur solaire en énergie mécanique par dilatation thermique des capteurs",
+        c: "Conversion directe de la lumière du soleil en courant alternatif 230 V sans aucun composant électronique",
+        d: "Stockage immédiat de la lumière sous forme d'énergie chimique sans génération d'électrons",
+        correct: "A"
+      },
+      {
+        id: 3,
+        theme: "Conditions STC",
+        text: "La puissance crête (Wc) d'un panneau photovoltaïque est mesurée dans les conditions standards de test (STC). Quelles sont ces conditions ?",
+        a: "Irradiance de 800 W/m² et température ambiante de 20 °C",
+        b: "Irradiance de 1000 W/m² et température des cellules de 25 °C",
+        c: "Irradiance de 1200 W/m² et température de 33 °C",
+        d: "Irradiance de 500 W/m² et température de 0 °C",
+        correct: "B",
+        exp: "Les conditions STC (Standard Test Conditions) imposent une irradiance de référence de 1000 W/m² et une température de jonction des cellules de 25 °C."
+      },
+      {
+        id: 4,
+        theme: "Puissance Crête Pc",
+        text: "Pour la maison d'El Jadida (Ec = 1700 Wh/j, K = 0,65, Ir,moy = 4,5 kWh/m²/j avec inclinaison β = 33°), quelle est la puissance crête Pc requise ?",
+        a: "Pc = 350 Wc",
+        b: "Pc = 581,2 Wc (car Pc = Ec / (0,65 × 4,5) = 1700 / 2,925)",
+        c: "Pc = 850 Wc",
+        d: "Pc = 265,6 Wc",
+        correct: "B",
+        exp: "La formule Pc = Ec / (K × Ir,moy) donne Pc = 1700 / (0,65 × 4,5) = 1700 / 2,925 = 581,2 Wc."
+      },
+      {
+        id: 5,
+        theme: "Tension du Système",
+        text: "Selon les règles de l'art, pour une puissance crête calculée Pc = 581,2 Wc (comprise entre 500 Wc et 2000 Wc), quelle tension nominale Usystème doit-on choisir ?",
+        a: "12 V DC",
+        b: "24 V DC (pour limiter l'intensité des courants et les pertes par effet Joule)",
+        c: "48 V DC",
+        d: "230 V AC",
+        correct: "B",
+        exp: "Pour Pc ≤ 500 Wc, on choisit 12 V DC ; pour 500 < Pc ≤ 2000 Wc, la recommandation standard est 24 V DC."
+      },
+      {
+        id: 6,
+        theme: "Nombre de Panneaux",
+        text: "Si l'on utilise des panneaux photovoltaïques de 150 Wc unitaire pour satisfaire Pc = 581,2 Wc, combien de panneaux faut-il retenir ?",
+        a: "3 panneaux",
+        b: "4 panneaux (N = 581,2 / 150 = 3,87 arrondi à l'entier supérieur, soit 600 Wc installés)",
+        c: "5 panneaux",
+        d: "6 panneaux",
+        correct: "B",
+        exp: "N = Pc,système / Pc,panneau = 581,2 / 150 = 3,87. Le nombre devant être entier, on arrondit à 4 panneaux (Ptotale = 4 × 150 = 600 Wc)."
+      },
+      {
+        id: 7,
+        theme: "Couplage Panneaux",
+        text: "Pour alimenter le système en 24 V à partir de 4 panneaux de 12 V (150 Wc chacun), quelle configuration de câblage doit être adoptée ?",
+        a: "4 panneaux tous en série (4S)",
+        b: "4 panneaux tous en parallèle (4P)",
+        c: "Montage 2S2P : 2 branches en parallèle, chaque branche comportant 2 panneaux en série",
+        d: "3 panneaux en série et 1 en parallèle",
+        correct: "C",
+        exp: "Ns = Usys / Up = 24 / 12 = 2 panneaux en série par branche. Npa = N / Ns = 4 / 2 = 2 branches en parallèle. C'est le montage 2S2P."
+      },
+      {
+        id: 8,
+        theme: "Câblage PV",
+        text: "Dans le montage 2S2P des 4 panneaux de 150 Wc (Umpp = 18,3 V, Impp = 8,27 A, Icc = 8,81 A), quelles sont les grandeurs totales au point de puissance maximale ?",
+        a: "Umpp,total = 18,3 V et Impp,total = 8,27 A",
+        b: "Umpp,total = 36,6 V et Impp,total = 16,54 A",
+        c: "Umpp,total = 73,2 V et Impp,total = 8,27 A",
+        d: "Umpp,total = 24 V et Impp,total = 33 A",
+        correct: "B",
+        exp: "En série, les tensions s'additionnent (2 × 18,3 V = 36,6 V) et en parallèle, les courants s'additionnent (2 × 8,27 A = 16,54 A)."
+      },
+      {
+        id: 9,
+        theme: "Batteries : Capacité C",
+        text: "Quelle est la formule exacte pour calculer la capacité de stockage requise C (en Ah) du parc de batteries ?",
+        a: "C = (Ec × N) / (D × Usys), où N est l'autonomie et D la profondeur de décharge maximale admissible (PDD)",
+        b: "C = (Ec × D) / (N × Usys)",
+        c: "C = Ec / (Usys × N)",
+        d: "C = (Ec × Usys) / (D × N)",
+        correct: "A",
+        exp: "La capacité C (Ah) = (Énergie journalière Ec × Jours d'autonomie N) / (Profondeur de décharge D × Tension du système Usys)."
+      },
+      {
+        id: 10,
+        theme: "Batteries : Calcul",
+        text: "Dans l'étude (Ec = 1700 Wh/j, N = 3 jours d'autonomie, PDD D = 0,8 soit 80%, Usys = 24 V), quelle est la capacité minimale requise du parc ?",
+        a: "C = 100 Ah",
+        b: "C = 265,63 Ah (car C = 5100 / 19,2)",
+        c: "C = 531,25 Ah",
+        d: "C = 170 Ah",
+        correct: "B",
+        exp: "C = (1700 × 3) / (0,8 × 24) = 5100 / 19,2 ≈ 265,63 Ah sous 24 V."
+      },
+      {
+        id: 11,
+        theme: "Choix des Batteries",
+        text: "Avec des batteries solaires de 12 V / 100 Ah, quel est le nombre total de batteries (NBatt) retenu pour assurer 265,63 Ah sous 24 V ?",
+        a: "3 batteries",
+        b: "6 batteries (3 branches en parallèle de 2 batteries en série chacune, soit 300 Ah installés)",
+        c: "8 batteries",
+        d: "4 batteries",
+        correct: "B",
+        exp: "NBatt = (24/12) × (265,63/100) = 2 × 2,656 = 5,31. Par arrondi à l'entier pair supérieur, on retient 6 batteries (2 en série par branche, réparties sur 3 branches)."
+      },
+      {
+        id: 12,
+        theme: "Technologie Batteries",
+        text: "Quelles sont les électrodes et l'électrolyte d'un accumulateur au plomb ?",
+        a: "Électrode positive en Peroxyde de plomb (PbO2), électrode négative en Plomb métallique (Pb), électrolyte en acide sulfurique (H2SO4)",
+        b: "Électrode positive en Lithium, électrode négative en Carbone, électrolyte en eau salée",
+        c: "Électrodes en Nickel-Cadmium et électrolyte basique KOH",
+        d: "Électrodes en cuivre et zinc avec électrolyte gélifié neutre",
+        correct: "A",
+        exp: "L'accumulateur au plomb utilise PbO2 pour la plaque positive, Pb pour la plaque négative et une solution diluée d'acide sulfurique H2SO4 comme électrolyte."
+      },
+      {
+        id: 13,
+        theme: "Régulateur de Charge",
+        text: "Quels sont les deux rôles de protection majeurs assurés par le régulateur de charge solaire ?",
+        a: "Convertir le courant continu en 230 V alternatif et mesurer le vent",
+        b: "Protéger la batterie contre la surcharge et contre la décharge profonde",
+        c: "Refroidir les panneaux photovoltaïques et nettoyer la poussière",
+        d: "Augmenter la résistance des câbles solaires",
+        correct: "B",
+        exp: "Le régulateur réduit/interrompt la charge quand la batterie est pleine (anti-surcharge) et déconnecte les récepteurs si la tension est trop basse (anti-décharge profonde)."
+      },
+      {
+        id: 14,
+        theme: "PWM vs MPPT",
+        text: "Quelle est la différence fondamentale entre les régulateurs PWM et MPPT ?",
+        a: "Le régulateur PWM recherche le point de puissance maximale alors que le MPPT est à tension fixe",
+        b: "Le PWM est simple et économique ; le MPPT suit en continu le point de puissance maximale (MPP), offrant un rendement supérieur",
+        c: "Le PWM produit du courant alternatif, le MPPT du courant continu",
+        d: "Il n'y a aucune différence technique",
+        correct: "B",
+        exp: "PWM (Pulse Width Modulation) est simple et économique. MPPT (Maximum Power Point Tracking) ajuste continuellement la tension pour extraire la puissance maximale du champ PV."
+      },
+      {
+        id: 15,
+        theme: "Dimensionnement Régulateur",
+        text: "Pour un champ PV de 1000 Wc avec un parc de batteries de 24 V et une marge de sécurité de 25% (k=1,25), quel régulateur MPPT convient ?",
+        a: "MPPT 24 V – 20 A",
+        b: "MPPT 24 V – 40 A",
+        c: "MPPT 24 V – 60 A (car Icharge = 1000/24 = 41,67 A, et Irégulateur ≥ 41,67 × 1,25 = 52,08 A)",
+        d: "MPPT 12 V – 50 A",
+        correct: "C",
+        exp: "Le courant théorique est Icharge = 1000 Wc / 24 V = 41,67 A. Avec les 25% de marge : Irég = 41,67 × 1,25 = 52,08 A. Le calibre standard supérieur adapté est le MPPT 24V - 60A."
+      },
+      {
+        id: 16,
+        theme: "Dimensionnement Onduleur",
+        text: "Dans une installation autonome, pourquoi a-t-on choisi un onduleur 'Pur Sinus' (ex: CRISTEC SOLO 24V / 400W) pour la maison d'El Jadida ?",
+        a: "Parce que c'est le moins cher du marché",
+        b: "Pour supporter sans dysfonctionnement les charges inductives sensibles (TV, PC) et le fort courant de démarrage du réfrigérateur (Id = 3 à 5 In)",
+        c: "Parce qu'un onduleur quasi-sinus ne fonctionne qu'avec des lampes à pétrole",
+        d: "Pour remplacer le parc de batteries",
+        correct: "B",
+        exp: "Les moteurs (réfrigérateur) et appareils électroniques sensibles (TV, PC) exigent une onde sinusoïdale pure et doivent encaisser un courant d'appel au démarrage de 3 à 5 In."
+      },
+      {
+        id: 17,
+        theme: "Section des Câbles",
+        text: "Quelle formule permet de calculer la section minimale S (mm²) d'un conducteur en cuivre (résistivité ρ = 0,023 Ω·mm²/m à chaud) ?",
+        a: "S = (ρ × L × I) / ΔU",
+        b: "S = (ΔU × I) / (ρ × L)",
+        c: "S = (ρ × ΔU) / (L × I)",
+        d: "S = (L × I) / (ρ × ΔU)",
+        correct: "A",
+        exp: "La section minimale théorique S = (ρ × L × I) / ΔU, où L est la longueur simple (aller), I le courant maximal et ΔU la chute de tension admissible (ΔU = ε × U)."
+      },
+      {
+        id: 18,
+        theme: "Chute de Tension Câbles",
+        text: "Pour la liaison Panneaux PV → Régulateur (U = 24 V, I = 17,62 A, L = 10 m, ε = 3% soit ΔU = 0,72 V), quelle section normalisée est retenue ?",
+        a: "1,5 mm²",
+        b: "2,5 mm²",
+        c: "6 mm² (section calculée S1 = 5,63 mm²)",
+        d: "25 mm²",
+        correct: "C",
+        exp: "S1 = (0,023 × 10 × 17,62) / 0,72 ≈ 5,63 mm². On choisit la section normalisée immédiatement supérieure, soit 6 mm² (câble solaire double isolation)."
+      },
+      {
+        id: 19,
+        theme: "Section Onduleur",
+        text: "Pourquoi le tronçon Batteries → Onduleur est-il surdimensionné avec une section normalisée de 10 mm² ?",
+        a: "Pour résister aux rongeurs uniquement",
+        b: "Pour absorber le fort courant de démarrage (Id) du moteur du réfrigérateur sans provoquer de chute de tension bloquante",
+        c: "Pour diminuer la tension de 24 V à 12 V",
+        d: "Parce que le câble mesure plus de 50 mètres",
+        correct: "B",
+        exp: "Le compresseur du réfrigérateur appelle un courant Id de 3 à 5 fois son courant nominal au démarrage ; surdimensionner à 10 mm² évite une baisse de tension qui mettrait l'onduleur en sécurité."
+      },
+      {
+        id: 20,
+        theme: "Dispositifs de Protection",
+        text: "Quel dispositif de protection côté courant alternatif (CA) déclenche en cas de défaut d'isolement ou de fuite à la terre supérieure à 30 mA en moins de 2 secondes ?",
+        a: "Le fusible de branche continu",
+        b: "Le disjoncteur différentiel 30 mA (protection des personnes)",
+        c: "Le sectionneur DC",
+        d: "La diode de branche",
+        correct: "B",
+        exp: "Le disjoncteur différentiel 30 mA surveille la différence entre le courant d'aller et de retour et coupe automatiquement le circuit en cas de fuite corporelle ou défaut d'isolement pour protéger les personnes."
+      }
+    ];
+
+    // ==========================================
+    // DONNÉES TD & TP (SAISIE LIBRE DU NOM + PDF / MATLAB / SIMULINK / EXCEL)
+    // ==========================================
+    let tdFiles = [];
+    let tpFiles = [];
+
+    function getFileInfo(fileName) {
+      const ext = fileName.split('.').pop().toLowerCase();
+      if (ext === 'pdf') {
+        return { type: 'pdf', icon: '📄', label: 'PDF', badge: 'bg-red-100 text-red-700' };
+      } else if (ext === 'm') {
+        return { type: 'matlab', icon: '💻', label: 'MATLAB (.m)', badge: 'bg-orange-100 text-orange-800' };
+      } else if (ext === 'slx' || ext === 'mdl') {
+        return { type: 'simulink', icon: '⚙️', label: 'Simulink (.slx)', badge: 'bg-blue-100 text-blue-800' };
+      } else if (ext === 'xlsx' || ext === 'xls') {
+        return { type: 'excel', icon: '📊', label: 'Excel (.xlsx)', badge: 'bg-emerald-100 text-emerald-800' };
+      }
+      return null;
+    }
+
+    // ==========================================
+    // SÉCURITÉ & AUTHENTIFICATION ADMIN
+    // ==========================================
+    const ADMIN_PASSWORD = "Listm@2025";
+
+    function isAdminAuthenticated() {
+      return sessionStorage.getItem('e2i_admin_auth') === 'true';
+    }
+
+    function openAdminAuthModal() {
+      const modal = document.getElementById('admin-auth-modal');
+      const input = document.getElementById('admin-pwd-input');
+      const error = document.getElementById('admin-auth-error');
+      if (error) error.classList.add('hidden');
+      if (input) input.value = '';
+      if (modal) modal.classList.remove('hidden');
+      setTimeout(() => input && input.focus(), 80);
+    }
+
+    function closeAdminAuthModal() {
+      const modal = document.getElementById('admin-auth-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function handleAdminPasswordSubmit(event) {
+      if (event) event.preventDefault();
+      const input = document.getElementById('admin-pwd-input');
+      const error = document.getElementById('admin-auth-error');
+      const val = input ? input.value : '';
+
+      if (val === ADMIN_PASSWORD) {
+        sessionStorage.setItem('e2i_admin_auth', 'true');
+        closeAdminAuthModal();
+        showAdminPage();
+      } else {
+        if (error) error.classList.remove('hidden');
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+      }
+    }
+
+    function showAdminPage() {
+      document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active-nav');
+        btn.classList.add('text-blue-100');
+      });
+      const target = document.getElementById('page-admin');
+      const activeNav = document.getElementById('nav-admin');
+      if (target) target.classList.remove('hidden');
+      if (activeNav) {
+        activeNav.classList.add('active-nav');
+        activeNav.classList.remove('text-blue-100');
+      }
+      renderAdminTable();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function lockAdminSession() {
+      sessionStorage.removeItem('e2i_admin_auth');
+      navigateTo('home');
+    }
+
+    // ==========================================
+    // ROUTAGE / NAVIGATION
+    // ==========================================
+    function navigateTo(pageId) {
+      if (pageId === 'admin') {
+        if (!isAdminAuthenticated()) {
+          openAdminAuthModal();
+          return;
+        }
+        showAdminPage();
+        return;
+      }
+
+      document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active-nav');
+        btn.classList.add('text-blue-100');
+      });
+
+      const target = document.getElementById('page-' + pageId);
+      const activeNav = document.getElementById('nav-' + pageId);
+      if (target) target.classList.remove('hidden');
+      if (activeNav) {
+        activeNav.classList.add('active-nav');
+        activeNav.classList.remove('text-blue-100');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // GESTION DU TABLEAU TD (PDF, MATLAB, SIMULINK, EXCEL)
+    // ==========================================
+    function renderTDTable() {
+      const tbody = document.getElementById('td-table-body');
+      tbody.innerHTML = '';
+      document.getElementById('td-count-badge').textContent = `${tdFiles.length} fichier(s)`;
+
+      if (tdFiles.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Aucun document dans le tableau. Saisissez votre titre personnalisé ci-dessus et téléversez votre fichier (PDF, MATLAB, Simulink ou Excel).</td></tr>';
+        return;
+      }
+
+      tdFiles.forEach((file) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-purple-50 transition-colors';
+        tr.innerHTML = `
+          <td class="p-3.5 font-bold text-gray-800">${file.customName}</td>
+          <td class="p-3.5 text-xs text-gray-600 font-mono flex items-center gap-1.5">
+            <span class="text-lg">${file.info.icon}</span>
+            <span>${file.name}</span>
+          </td>
+          <td class="p-3.5">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${file.info.badge}">
+              ${file.info.label}
+            </span>
+          </td>
+          <td class="p-3.5 text-xs text-gray-500">${file.date}</td>
+          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size}</td>
+          <td class="p-3.5 text-right space-x-1">
+            <button onclick="downloadFileLocal('${file.name}', '${file.info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 shadow">
+              ⬇ Télécharger
+            </button>
+            <button onclick="deleteTDFile(${file.id})" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100">
+              🗑️
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function handleUploadTD(e) {
+      e.preventDefault();
+      const titleInput = document.getElementById('td-upload-title');
+      const fileInput = document.getElementById('td-upload-file');
+      const msg = document.getElementById('td-upload-msg');
+
+      if (!fileInput.files || fileInput.files.length === 0) return;
+      const file = fileInput.files[0];
+      const customTitle = titleInput.value.trim();
+
+      if (!customTitle) {
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
+        msg.textContent = '⚠️ Veuillez saisir un nom ou titre pour ce fichier dans la zone de texte.';
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const info = getFileInfo(file.name);
+      if (!info) {
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
+        msg.textContent = '❌ Format non supporté. Formats acceptés : PDF (.pdf), MATLAB (.m), Simulink (.slx) et Excel (.xlsx, .xls).';
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const sizeKB = Math.round(file.size / 1024);
+      const sizeStr = sizeKB > 1024 ? (sizeKB / 1024).toFixed(1) + ' Mo' : sizeKB + ' Ko';
+      const today = new Date().toLocaleDateString('fr-FR');
+
+      tdFiles.push({
+        id: Date.now(),
+        customName: customTitle,
+        name: file.name,
+        info: info,
+        date: today,
+        size: sizeStr
+      });
+
+      renderTDTable();
+      titleInput.value = '';
+      fileInput.value = '';
+
+      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+      msg.textContent = `✅ Fichier "${file.name}" ajouté avec votre titre "${customTitle}" !`;
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 4000);
+    }
+
+    function deleteTDFile(id) {
+      if (!confirm('Supprimer ce document de la liste ?')) return;
+      tdFiles = tdFiles.filter(f => f.id !== id);
+      renderTDTable();
+    }
+
+    // ==========================================
+    // GESTION DU TABLEAU TP (PDF, MATLAB, SIMULINK, EXCEL)
+    // ==========================================
+    function renderTPTable() {
+      const tbody = document.getElementById('tp-table-body');
+      tbody.innerHTML = '';
+      document.getElementById('tp-count-badge').textContent = `${tpFiles.length} fichier(s)`;
+
+      if (tpFiles.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Aucun protocole ou modèle dans le tableau. Saisissez votre titre personnalisé ci-dessus et téléversez votre fichier (PDF, MATLAB, Simulink ou Excel).</td></tr>';
+        return;
+      }
+
+      tpFiles.forEach((file) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-emerald-50 transition-colors';
+        tr.innerHTML = `
+          <td class="p-3.5 font-bold text-gray-800">${file.customName}</td>
+          <td class="p-3.5 text-xs text-gray-600 font-mono flex items-center gap-1.5">
+            <span class="text-lg">${file.info.icon}</span>
+            <span>${file.name}</span>
+          </td>
+          <td class="p-3.5">
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${file.info.badge}">
+              ${file.info.label}
+            </span>
+          </td>
+          <td class="p-3.5 text-xs text-gray-500">${file.date}</td>
+          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size}</td>
+          <td class="p-3.5 text-right space-x-1">
+            <button onclick="downloadFileLocal('${file.name}', '${file.info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow">
+              ⬇ Télécharger
+            </button>
+            <button onclick="deleteTPFile(${file.id})" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100">
+              🗑️
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function handleUploadTP(e) {
+      e.preventDefault();
+      const titleInput = document.getElementById('tp-upload-title');
+      const fileInput = document.getElementById('tp-upload-file');
+      const msg = document.getElementById('tp-upload-msg');
+
+      if (!fileInput.files || fileInput.files.length === 0) return;
+      const file = fileInput.files[0];
+      const customTitle = titleInput.value.trim();
+
+      if (!customTitle) {
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
+        msg.textContent = '⚠️ Veuillez saisir un nom ou titre pour ce fichier dans la zone de texte.';
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const info = getFileInfo(file.name);
+      if (!info) {
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
+        msg.textContent = '❌ Format non supporté. Formats acceptés : PDF (.pdf), MATLAB (.m), Simulink (.slx) et Excel (.xlsx, .xls).';
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const sizeKB = Math.round(file.size / 1024);
+      const sizeStr = sizeKB > 1024 ? (sizeKB / 1024).toFixed(1) + ' Mo' : sizeKB + ' Ko';
+      const today = new Date().toLocaleDateString('fr-FR');
+
+      tpFiles.push({
+        id: Date.now(),
+        customName: customTitle,
+        name: file.name,
+        info: info,
+        date: today,
+        size: sizeStr
+      });
+
+      renderTPTable();
+      titleInput.value = '';
+      fileInput.value = '';
+
+      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+      msg.textContent = `✅ Fichier "${file.name}" ajouté avec votre titre "${customTitle}" !`;
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 4000);
+    }
+
+    function deleteTPFile(id) {
+      if (!confirm('Supprimer ce protocole de la liste ?')) return;
+      tpFiles = tpFiles.filter(f => f.id !== id);
+      renderTPTable();
+    }
+
+    function downloadFileLocal(fileName, type) {
+      let mime = "application/octet-stream";
+      if (type === 'pdf') mime = "application/pdf";
+      else if (type === 'excel') mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+      else if (type === 'matlab') mime = "text/x-matlab";
+
+      const blob = new Blob(["Contenu du fichier photovoltaïque LPE E2I : " + fileName], { type: mime });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+    }
+
+    // ==========================================
+    // LOGIQUE ÉVALUATION QCM
+    // ==========================================
+    let currentQIndex = 0;
+    let studentAnswers = {};
+    let timerInterval = null;
+    let secondsLeft = 3600;
+
+    function startQCM() {
+      studentAnswers = {};
+      currentQIndex = 0;
+      secondsLeft = 3600;
+
+      document.getElementById('qcm-intro').classList.add('hidden');
+      document.getElementById('qcm-results').classList.add('hidden');
+      document.getElementById('qcm-test').classList.remove('hidden');
+
+      renderPills();
+      showQuestion(0);
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          submitQCM();
+          return;
+        }
+        const m = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
+        const s = (secondsLeft % 60).toString().padStart(2, '0');
+        document.getElementById('qcm-timer').textContent = `${m}:${s}`;
+      }, 1000);
+    }
+
+    function showQuestion(index) {
+      currentQIndex = index;
+      const q = allQuestions[index];
+
+      document.getElementById('qcm-current-num').textContent = index + 1;
+      document.getElementById('qcm-chapter-badge').textContent = `Thème : ${q.theme}`;
+      document.getElementById('qcm-question-text').textContent = `${index + 1}. ${q.text}`;
+
+      const optionsDiv = document.getElementById('qcm-options');
+      optionsDiv.innerHTML = '';
+
+      ['A', 'B', 'C', 'D'].forEach(letter => {
+        const optionKey = letter.toLowerCase();
+        const text = q[optionKey];
+        const isSelected = studentAnswers[q.id] === letter;
+
+        const btn = document.createElement('button');
+        btn.className = `w-full text-left p-4 rounded-xl border transition-all flex items-center gap-3 ${
+          isSelected 
+            ? 'bg-blue-50 border-blue-600 text-blue-900 font-bold ring-2 ring-blue-500' 
+            : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+        }`;
+        btn.onclick = () => selectAnswer(q.id, letter);
+        btn.innerHTML = `
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${isSelected ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}">
+            ${letter}
+          </div>
+          <span class="flex-1 text-sm md:text-base">${text}</span>
+        `;
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById('btn-prev').disabled = index === 0;
+      document.getElementById('btn-next').disabled = index === allQuestions.length - 1;
+      updatePills();
+    }
+
+    function selectAnswer(qId, letter) {
+      studentAnswers[qId] = letter;
+      showQuestion(currentQIndex);
+      updatePills();
+    }
+
+    function prevQuestion() {
+      if (currentQIndex > 0) showQuestion(currentQIndex - 1);
+    }
+
+    function nextQuestion() {
+      if (currentQIndex < allQuestions.length - 1) showQuestion(currentQIndex + 1);
+    }
+
+    function renderPills() {
+      const container = document.getElementById('qcm-pills');
+      container.innerHTML = '';
+      allQuestions.forEach((q, i) => {
+        const pill = document.createElement('button');
+        pill.id = `pill-${i}`;
+        pill.textContent = i + 1;
+        pill.className = 'w-8 h-8 rounded-lg font-bold text-xs transition border border-gray-300 bg-gray-100 text-gray-600';
+        pill.onclick = () => showQuestion(i);
+        container.appendChild(pill);
+      });
+    }
+
+    function updatePills() {
+      allQuestions.forEach((q, i) => {
+        const pill = document.getElementById(`pill-${i}`);
+        if (!pill) return;
+        const isAnswered = !!studentAnswers[q.id];
+        const isCurrent = i === currentQIndex;
+
+        if (isCurrent) {
+          pill.className = 'w-8 h-8 rounded-lg font-bold text-xs transition ring-2 ring-blue-600 bg-blue-600 text-white';
+        } else if (isAnswered) {
+          pill.className = 'w-8 h-8 rounded-lg font-bold text-xs transition bg-blue-100 text-blue-800 border border-blue-300';
+        } else {
+          pill.className = 'w-8 h-8 rounded-lg font-bold text-xs transition bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200';
+        }
+      });
+    }
+
+    function confirmSubmitQCM() {
+      const answeredCount = Object.keys(studentAnswers).length;
+      if (answeredCount < allQuestions.length) {
+        if (!confirm(`Vous avez répondu à ${answeredCount} question(s) sur ${allQuestions.length}. Voulez-vous valider votre épreuve ?`)) {
+          return;
+        }
+      }
+      submitQCM();
+    }
+
+    function submitQCM() {
+      clearInterval(timerInterval);
+      let score = 0;
+
+      allQuestions.forEach(q => {
+        if (studentAnswers[q.id] === q.correct) score++;
+      });
+
+      const percentage = Math.round((score / allQuestions.length) * 100);
+      const studentName = document.getElementById('qcm-student-name').value.trim() || 'Étudiant LPE E2I';
+
+      document.getElementById('qcm-test').classList.add('hidden');
+      document.getElementById('qcm-results').classList.remove('hidden');
+
+      document.getElementById('result-student').textContent = `Candidat : ${studentName}`;
+      document.getElementById('result-score').textContent = score;
+
+      // Enregistrement automatique dans la base de données administrative
+      const autoGradeRecord = {
+        id: Date.now(),
+        name: studentName,
+        score: score,
+        type: "QCM Photovoltaïque (20 Q)",
+        date: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+        note: `${percentage}% de réussite • Mention ${score >= 16 ? 'Très Bien' : score >= 14 ? 'Bien' : score >= 12 ? 'Assez Bien' : score >= 10 ? 'Passable' : 'Ajourné'}`
+      };
+      studentGrades.unshift(autoGradeRecord);
+      saveAdminGrades();
+
+      const syncText = document.getElementById('qcm-admin-sync-text');
+      if (syncText) {
+        syncText.textContent = `✅ Note enregistrée pour ${studentName} : ${score}/20 (${percentage}%) dans l'Espace Admin !`;
+      }
+
+      const header = document.getElementById('result-header');
+      const badge = document.getElementById('result-badge');
+      const icon = document.getElementById('result-icon');
+
+      if (score >= 12) {
+        header.className = 'bg-gradient-to-r from-emerald-600 to-teal-700 p-8 text-white text-center';
+        badge.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800 mb-6';
+        icon.textContent = '🎉';
+      } else if (score >= 8) {
+        header.className = 'bg-gradient-to-r from-amber-600 to-orange-700 p-8 text-white text-center';
+        badge.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-amber-100 text-amber-800 mb-6';
+        icon.textContent = '⚠️';
+      } else {
+        header.className = 'bg-gradient-to-r from-rose-600 to-red-700 p-8 text-white text-center';
+        badge.className = 'inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-rose-100 text-rose-800 mb-6';
+        icon.textContent = '❌';
+      }
+      badge.textContent = `Score : ${percentage}% • Mention : ${score >= 16 ? 'Très Bien' : score >= 14 ? 'Bien' : score >= 12 ? 'Assez Bien' : score >= 10 ? 'Passable' : 'Ajourné'}`;
+
+      // Corrigé
+      const correctionsDiv = document.getElementById('qcm-corrections');
+      correctionsDiv.innerHTML = '';
+
+      allQuestions.forEach((q, i) => {
+        const given = studentAnswers[q.id];
+        const isCorrect = given === q.correct;
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-xl border ${isCorrect ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`;
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="font-bold text-sm text-gray-800">Q${i + 1}. [${q.theme}] ${q.text}</div>
+            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold ${isCorrect ? 'bg-emerald-200 text-emerald-800' : 'bg-red-200 text-red-800'}">
+              ${isCorrect ? '✓ Correct (+1 pt)' : '✗ Incorrect (0 pt)'}
+            </span>
+          </div>
+          <div class="text-xs space-y-1">
+            <div>Votre réponse : <strong>${given ? `${given}) ${q[given.toLowerCase()]}` : 'Non répondue'}</strong></div>
+            <div class="text-emerald-800 font-semibold">Bonne réponse : <strong>${q.correct}) ${q[q.correct.toLowerCase()]}</strong></div>
+          </div>
+        `;
+        correctionsDiv.appendChild(card);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetQCM() {
+      document.getElementById('qcm-results').classList.add('hidden');
+      document.getElementById('qcm-intro').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Modal
+    function openModal(title, desc) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-desc').textContent = desc;
+      document.getElementById('doc-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('doc-modal').classList.add('hidden');
+    }
+
+
+    // ==========================================
+    // DONNÉES & LOGIQUE ADMIN (GESTION DES NOTES)
+    // ==========================================
+    const DEFAULT_GRADES = [
+      { id: 101, name: "Karim El Idrissi", score: 17.5, type: "QCM Photovoltaïque", date: "13/11/2026 10:15", note: "Très bonne maîtrise du bilan énergétique et couplage 2S2P" },
+      { id: 102, name: "Fatima-Zahra Mansouri", score: 16.0, type: "QCM Photovoltaïque", date: "13/11/2026 10:20", note: "Excellent calcul de chute de tension et section de câble" },
+      { id: 103, name: "Yassine Berrada", score: 14.5, type: "Banc d'essai TP", date: "13/11/2026 11:00", note: "Bonne caractérisation MPPT sous Simulink" },
+      { id: 104, name: "Salma Chraibi", score: 12.0, type: "QCM Photovoltaïque", date: "13/11/2026 11:30", note: "Conforme, à consolider sur le parc de batteries 24V" },
+      { id: 105, name: "Mehdi Tazi", score: 8.5, type: "Contrôle Continu", date: "13/11/2026 12:00", note: "Rattrapage conseillé sur le calcul de la puissance crête Pc" }
+    ];
+
+    function loadAdminGrades() {
+      try {
+        const saved = localStorage.getItem('e2i_admin_grades');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+      return [...DEFAULT_GRADES];
+    }
+
+    let studentGrades = loadAdminGrades();
+
+    function saveAdminGrades() {
+      try {
+        localStorage.setItem('e2i_admin_grades', JSON.stringify(studentGrades));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function updateKPIs() {
+      const total = studentGrades.length;
+      document.getElementById('kpi-total-students').textContent = total;
+      if (total === 0) {
+        document.getElementById('kpi-avg-score').textContent = '0 / 20';
+        document.getElementById('kpi-success-rate').textContent = '0%';
+        document.getElementById('kpi-max-score').textContent = '0 / 20';
+        return;
+      }
+      const sum = studentGrades.reduce((acc, g) => acc + Number(g.score), 0);
+      const avg = (sum / total).toFixed(2);
+      const passed = studentGrades.filter(g => Number(g.score) >= 10).length;
+      const rate = Math.round((passed / total) * 100);
+      const max = Math.max(...studentGrades.map(g => Number(g.score))).toFixed(1);
+
+      document.getElementById('kpi-avg-score').textContent = `${avg} / 20`;
+      document.getElementById('kpi-success-rate').textContent = `${rate}%`;
+      document.getElementById('kpi-max-score').textContent = `${max} / 20`;
+    }
+
+    function renderAdminTable() {
+      updateKPIs();
+      const tbody = document.getElementById('admin-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const search = (document.getElementById('admin-search-input')?.value || '').toLowerCase().trim();
+      const filterStatus = document.getElementById('admin-filter-status')?.value || 'all';
+
+      let filtered = studentGrades.filter(g => {
+        const matchName = (g.name || '').toLowerCase().includes(search);
+        const scoreVal = Number(g.score);
+        if (filterStatus === 'passed') return matchName && scoreVal >= 10;
+        if (filterStatus === 'failed') return matchName && scoreVal < 10;
+        return matchName;
+      });
+
+      document.getElementById('admin-table-badge').textContent = `${filtered.length} / ${studentGrades.length} note(s)`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-gray-400">Aucun étudiant ou résultat trouvé pour ce filtre.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const scoreNum = Number(item.score);
+        const pct = Math.round((scoreNum / 20) * 100);
+        const isPassed = scoreNum >= 10;
+
+        let scoreBadgeClass = "text-emerald-700 bg-emerald-50 border-emerald-200";
+        if (scoreNum < 10) scoreBadgeClass = "text-red-700 bg-red-50 border-red-200";
+        else if (scoreNum < 12) scoreBadgeClass = "text-amber-700 bg-amber-50 border-amber-200";
+
+        let decisionBadge = isPassed
+          ? `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">✅ Validé (Admis)</span>`
+          : `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">❌ Ajourné</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition-colors';
+        tr.innerHTML = `
+          <td class="p-3.5">
+            <div class="font-bold text-gray-900 flex items-center gap-2">
+              <span class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-black">
+                ${(item.name || 'E').slice(0, 1).toUpperCase()}
+              </span>
+              <span>${item.name}</span>
+            </div>
+          </td>
+          <td class="p-3.5">
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+              ${item.type || 'Évaluation'}
+            </span>
+          </td>
+          <td class="p-3.5 text-center">
+            <span class="inline-block px-3 py-1 rounded-xl text-sm font-black border ${scoreBadgeClass}">
+              ${scoreNum.toFixed(1)} / 20
+            </span>
+          </td>
+          <td class="p-3.5 text-center font-bold text-xs text-gray-600">
+            ${pct}%
+          </td>
+          <td class="p-3.5">
+            ${decisionBadge}
+          </td>
+          <td class="p-3.5 text-xs text-gray-500 whitespace-nowrap">
+            ${item.date || '-'}
+          </td>
+          <td class="p-3.5 text-xs text-gray-600 max-w-xs truncate" title="${item.note || ''}">
+            ${item.note || '—'}
+          </td>
+          <td class="p-3.5 text-right space-x-1 whitespace-nowrap">
+            <button onclick="editAdminGrade(${item.id})" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100" title="Modifier">
+              ✏️
+            </button>
+            <button onclick="deleteAdminGrade(${item.id})" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100" title="Supprimer">
+              🗑️
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function handleSaveGrade(e) {
+      e.preventDefault();
+      const recId = document.getElementById('admin-record-id').value;
+      const nameInput = document.getElementById('admin-student-name');
+      const scoreInput = document.getElementById('admin-student-score');
+      const typeInput = document.getElementById('admin-exam-type');
+      const commentInput = document.getElementById('admin-comment');
+      const msg = document.getElementById('admin-form-msg');
+
+      const nameVal = nameInput.value.trim();
+      const scoreVal = parseFloat(scoreInput.value);
+
+      if (!nameVal) {
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800';
+        msg.textContent = "❌ Veuillez saisir le nom de l'étudiant.";
+        msg.classList.remove('hidden');
+        return;
+      }
+      if (isNaN(scoreVal) || scoreVal < 0 || scoreVal > 20) {
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800';
+        msg.textContent = "❌ La note doit être un nombre compris entre 0 et 20.";
+        msg.classList.remove('hidden');
+        return;
+      }
+
+      const todayStr = new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+      if (recId) {
+        // Modification
+        const existing = studentGrades.find(g => g.id == recId);
+        if (existing) {
+          existing.name = nameVal;
+          existing.score = scoreVal;
+          existing.type = typeInput.value;
+          existing.note = commentInput.value.trim();
+          existing.date = todayStr + ' (modifié)';
+        }
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800';
+        msg.textContent = `✅ Note de "${nameVal}" mise à jour avec succès (${scoreVal}/20) !`;
+      } else {
+        // Nouveau
+        const newGrade = {
+          id: Date.now(),
+          name: nameVal,
+          score: scoreVal,
+          type: typeInput.value,
+          date: todayStr,
+          note: commentInput.value.trim()
+        };
+        studentGrades.unshift(newGrade);
+        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800';
+        msg.textContent = `✅ Note enregistrée pour l'étudiant "${nameVal}" : ${scoreVal}/20 !`;
+      }
+
+      saveAdminGrades();
+      renderAdminTable();
+      resetGradeForm();
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 4000);
+    }
+
+    function editAdminGrade(id) {
+      const item = studentGrades.find(g => g.id === id);
+      if (!item) return;
+      document.getElementById('admin-record-id').value = item.id;
+      document.getElementById('admin-student-name').value = item.name;
+      document.getElementById('admin-student-score').value = item.score;
+      document.getElementById('admin-exam-type').value = item.type || "QCM Photovoltaïque";
+      document.getElementById('admin-comment').value = item.note || "";
+      document.getElementById('admin-form-title').textContent = "Modifier la note de " + item.name;
+      document.getElementById('admin-submit-btn').innerHTML = '<span>💾</span> Mettre à jour la note';
+      document.getElementById('admin-cancel-btn').classList.remove('hidden');
+      document.getElementById('admin-student-name').focus();
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function deleteAdminGrade(id) {
+      const item = studentGrades.find(g => g.id === id);
+      if (!item) return;
+      if (!confirm(`Supprimer la note de ${item.name} (${item.score}/20) ?`)) return;
+      studentGrades = studentGrades.filter(g => g.id !== id);
+      saveAdminGrades();
+      renderAdminTable();
+    }
+
+    function resetGradeForm() {
+      document.getElementById('admin-record-id').value = '';
+      document.getElementById('admin-student-name').value = '';
+      document.getElementById('admin-student-score').value = '';
+      document.getElementById('admin-comment').value = '';
+      document.getElementById('admin-form-title').textContent = "Enregistrer un étudiant et sa note";
+      document.getElementById('admin-submit-btn').innerHTML = '<span>💾</span> Enregistrer la note';
+      document.getElementById('admin-cancel-btn').classList.add('hidden');
+    }
+
+    function clearAllGrades() {
+      if (confirm("Voulez-vous réinitialiser le relevé des notes avec les données types de la promotion ?")) {
+        studentGrades = [...DEFAULT_GRADES];
+        saveAdminGrades();
+        renderAdminTable();
+      }
+    }
+
+    function exportGradesCSV() {
+      if (studentGrades.length === 0) {
+        alert("Aucune note à exporter.");
+        return;
+      }
+      let csvContent = "\uFEFF"; // UTF-8 BOM
+      csvContent += "Nom de l'étudiant;Évaluation;Note sur 20;Pourcentage;Décision;Date et Heure;Observation\r\n";
+      studentGrades.forEach(g => {
+        const pct = Math.round((Number(g.score) / 20) * 100);
+        const decision = Number(g.score) >= 10 ? "Validé" : "Ajourné";
+        const cleanName = (g.name || "").replace(/;/g, ',');
+        const cleanType = (g.type || "").replace(/;/g, ',');
+        const cleanNote = (g.note || "").replace(/;/g, ',');
+        csvContent += `"${cleanName}";"${cleanType}";${Number(g.score).toFixed(2)};${pct}%;"${decision}";"${g.date}";"${cleanNote}"\r\n`;
+      });
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Releve_Notes_E2I_Photovoltaique_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+
+  </script>
+</body>
+</html>

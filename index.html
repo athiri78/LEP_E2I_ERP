@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Plateforme pédagogique de Physique - Faculté des Sciences El Jadida - Université Chouaib Doukkali" />
+    <title>Énergie Renouvelable Photovoltaïque – UCD</title>
+    <script type="text/javascript">
+      // Redirection automatique immédiate si ouvert en local (file://)
+      if (window.location.protocol === 'file:') {
+        window.location.replace('accueil.html');
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #f8fafc;
+        color: #1e293b;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .top-bar {
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 8px 16px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .top-bar span { opacity: 0.8; }
+      .top-bar .sep { margin: 0 8px; opacity: 0.4; }
+      .main-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+      .card {
+        background: #ffffff;
+        max-width: 640px;
+        width: 100%;
+        border-radius: 24px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
+        overflow: hidden;
+        text-align: center;
+      }
+      .card-header {
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 50%, #312e81 100%);
+        color: white;
+        padding: 48px 32px;
+      }
+      .badge {
+        display: inline-block;
+        background: rgba(255,255,255,0.15);
+        color: #dbeafe;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 999px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+      .card-header h1 {
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+      .card-header h1 span {
+        color: #fbbf24;
+        display: block;
+      }
+      .card-header p {
+        color: #bfdbfe;
+        font-size: 14px;
+        margin-top: 12px;
+      }
+      .card-body {
+        padding: 40px 32px;
+      }
+      .card-body p {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 32px;
+      }
+      /* Le seul lien de la page index */
+      .single-link-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: #1e40af;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 16px 36px;
+        border-radius: 14px;
+        box-shadow: 0 10px 20px -5px rgba(30, 64, 175, 0.4);
+        transition: all 0.2s ease;
+      }
+      .single-link-btn:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 14px 24px -5px rgba(30, 64, 175, 0.5);
+      }
+      .footer {
+        background: #0f172a;
+        color: #94a3b8;
+        padding: 16px;
+        text-align: center;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top bar institutionnelle -->
+    <div class="top-bar">
+      <span>Université Chouaib Doukkali</span>
+      <span class="sep">|</span>
+      <span>Faculté des Sciences El Jadida</span>
+      <span class="sep">|</span>
+      <span>LPE : Électronique et Informatique Industrielle (E2I)</span>
+    </div>
+
+    <!-- Conteneur principal avec UN SEUL LIEN -->
+    <div class="main-container">
+      <div class="card">
+        <div class="card-header">
+          <div class="badge">🎓 Année universitaire 2026–2027 • LPE E2I</div>
+          <h1>
+            Énergie Renouvelable
+            <span>Photovoltaïque</span>
+          </h1>
+          <p>Faculté des Sciences El Jadida – Département de Physique</p>
+        </div>
+        <div class="card-body">
+          <p>
+            Bienvenue sur la plateforme pédagogique dédiée aux étudiants de la filière LPE : Électronique et Informatique Industrielle (E2I). Accédez directement à votre espace d'évaluation et aux ressources pédagogiques.
+          </p>
+          <!-- LE SEUL LIEN DE LA PAGE INDEX -->
+          <a href="accueil.html" class="single-link-btn">
+            <span>📝</span> Accéder à l'Évaluation QCM Photovoltaïque →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2026–2027 Faculté des Sciences El Jadida – Université Chouaib Doukkali
+    </div>
+
+    <div id="root" style="display:none;"></div>
+  </body>
+</html>
