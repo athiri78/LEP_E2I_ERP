@@ -6,6 +6,10 @@
   <title>Énergie Renouvelable Photovoltaïque – LPE E2I – UCD</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <!-- Firebase SDKs (Cloud Storage & Base de données temps réel Firestore) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
   <style>
     .bg-ucd-blue { background-color: #1e40af; }
     .bg-ucd-blue-dark { background-color: #0f172a; }
@@ -996,10 +1000,86 @@
     ];
 
     // ==========================================
-    // DONNÉES TD & TP (SAISIE LIBRE DU NOM + PDF / MATLAB / SIMULINK / EXCEL)
+    // CONFIGURATION FIREBASE (SYNCHRONISATION MULTI-APPAREILS)
     // ==========================================
+    // REMPLACEZ CI-DESSOUS PAR VOS CLÉS OBTENUES SUR console.firebase.google.com :
+    const firebaseConfig = {
+      apiKey: "VOTRE_API_KEY",
+      authDomain: "VOTRE_PROJECT_ID.firebaseapp.com",
+      projectId: "VOTRE_PROJECT_ID",
+      storageBucket: "VOTRE_PROJECT_ID.appspot.com",
+      messagingSenderId: "VOTRE_MESSAGING_SENDER_ID",
+      appId: "VOTRE_APP_ID"
+    };
+
+    let isFirebaseReady = false;
+    let db = null;
+    let storage = null;
     let tdFiles = [];
     let tpFiles = [];
+
+    function initFirebase() {
+      try {
+        if (typeof firebase !== 'undefined' && firebaseConfig.apiKey && firebaseConfig.apiKey !== "VOTRE_API_KEY") {
+          if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+          }
+          db = firebase.firestore();
+          storage = firebase.storage();
+          isFirebaseReady = true;
+          console.log("✅ Firebase connecté avec succès pour LEP_E2I_ERP !");
+          listenRealtimeData();
+        } else {
+          console.warn("⚠️ Firebase : en attente de vos clés réelles dans firebaseConfig. Le mode local reste actif.");
+        }
+      } catch (err) {
+        console.error("Erreur Firebase:", err);
+      }
+      renderTDTable();
+      renderTPTable();
+    }
+
+    function listenRealtimeData() {
+      if (!isFirebaseReady || !db) return;
+
+      // Écoute temps réel TD
+      db.collection('td_files').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+        tdFiles = [];
+        snapshot.forEach((doc) => {
+          const d = doc.data();
+          tdFiles.push({
+            id: doc.id,
+            customName: d.customName,
+            name: d.name,
+            storagePath: d.storagePath,
+            url: d.url,
+            info: getFileInfo(d.name),
+            date: d.date,
+            size: d.size
+          });
+        });
+        renderTDTable();
+      }, (err) => console.error("Erreur Firestore TD:", err));
+
+      // Écoute temps réel TP
+      db.collection('tp_files').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+        tpFiles = [];
+        snapshot.forEach((doc) => {
+          const d = doc.data();
+          tpFiles.push({
+            id: doc.id,
+            customName: d.customName,
+            name: d.name,
+            storagePath: d.storagePath,
+            url: d.url,
+            info: getFileInfo(d.name),
+            date: d.date,
+            size: d.size
+          });
+        });
+        renderTPTable();
+      }, (err) => console.error("Erreur Firestore TP:", err));
+    }
 
     function getFileInfo(fileName) {
       const ext = fileName.split('.').pop().toLowerCase();
@@ -1115,8 +1195,10 @@
     // ==========================================
     function renderTDTable() {
       const tbody = document.getElementById('td-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
-      document.getElementById('td-count-badge').textContent = `${tdFiles.length} fichier(s)`;
+      const badge = document.getElementById('td-count-badge');
+      if (badge) badge.textContent = `${tdFiles.length} fichier(s)`;
 
       if (tdFiles.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Aucun document dans le tableau. Saisissez votre titre personnalisé ci-dessus et téléversez votre fichier (PDF, MATLAB, Simulink ou Excel).</td></tr>';
@@ -1126,24 +1208,25 @@
       tdFiles.forEach((file) => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-purple-50 transition-colors';
+        const info = file.info || getFileInfo(file.name) || { icon: '📄', label: 'PDF', badge: 'bg-red-100 text-red-700', type: 'pdf' };
         tr.innerHTML = `
           <td class="p-3.5 font-bold text-gray-800">${file.customName}</td>
           <td class="p-3.5 text-xs text-gray-600 font-mono flex items-center gap-1.5">
-            <span class="text-lg">${file.info.icon}</span>
+            <span class="text-lg">${info.icon}</span>
             <span>${file.name}</span>
           </td>
           <td class="p-3.5">
-            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${file.info.badge}">
-              ${file.info.label}
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${info.badge}">
+              ${info.label}
             </span>
           </td>
-          <td class="p-3.5 text-xs text-gray-500">${file.date}</td>
-          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size}</td>
+          <td class="p-3.5 text-xs text-gray-500">${file.date || ''}</td>
+          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size || ''}</td>
           <td class="p-3.5 text-right space-x-1">
-            <button onclick="downloadFileLocal('${file.name}', '${file.info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 shadow">
+            <button onclick="downloadFile('${file.url || ''}', '${file.name}', '${info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 shadow">
               ⬇ Télécharger
             </button>
-            <button onclick="deleteTDFile(${file.id})" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100">
+            <button onclick="deleteTDFile('${file.id}', '${file.storagePath || ''}')" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100" title="Supprimer">
               🗑️
             </button>
           </td>
@@ -1152,11 +1235,12 @@
       });
     }
 
-    function handleUploadTD(e) {
+    async function handleUploadTD(e) {
       e.preventDefault();
       const titleInput = document.getElementById('td-upload-title');
       const fileInput = document.getElementById('td-upload-file');
       const msg = document.getElementById('td-upload-msg');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
 
       if (!fileInput.files || fileInput.files.length === 0) return;
       const file = fileInput.files[0];
@@ -1181,28 +1265,87 @@
       const sizeStr = sizeKB > 1024 ? (sizeKB / 1024).toFixed(1) + ' Mo' : sizeKB + ' Ko';
       const today = new Date().toLocaleDateString('fr-FR');
 
+      // TÉLÉVERSEMENT CLOUD VERS FIREBASE (PARTAGE MULTI-APPAREILS)
+      if (isFirebaseReady && storage && db) {
+        try {
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="inline-block animate-spin mr-1">⏳</span> Envoi vers le Cloud...';
+          }
+          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200';
+          msg.textContent = `⏳ Envoi du fichier "${file.name}" vers le stockage Cloud Firebase... Veuillez patienter.`;
+          msg.classList.remove('hidden');
+
+          const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+          const storagePath = `td_files/${Date.now()}_${cleanFileName}`;
+          const storageRef = storage.ref(storagePath);
+          const uploadSnapshot = await storageRef.put(file);
+          const downloadUrl = await uploadSnapshot.ref.getDownloadURL();
+
+          await db.collection('td_files').add({
+            customName: customTitle,
+            name: file.name,
+            storagePath: storagePath,
+            url: downloadUrl,
+            date: today,
+            size: sizeStr,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          titleInput.value = '';
+          fileInput.value = '';
+          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+          msg.textContent = `✅ Fichier "${file.name}" téléversé avec succès ! Il est instantanément visible sur tous les ordinateurs et téléphones.`;
+          setTimeout(() => msg.classList.add('hidden'), 5000);
+        } catch (uploadError) {
+          console.error("Erreur d'upload Firebase TD:", uploadError);
+          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
+          msg.textContent = `❌ Erreur Cloud : ${uploadError.message}. Vérifiez les règles de sécurité de Firebase Storage.`;
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>➕</span> Ajouter au tableau TD';
+          }
+        }
+        return;
+      }
+
+      // MODE LOCAL DE SECOURS (si les clés Firebase ne sont pas encore collées)
       tdFiles.push({
-        id: Date.now(),
+        id: 'local_' + Date.now(),
         customName: customTitle,
         name: file.name,
         info: info,
         date: today,
         size: sizeStr
       });
-
       renderTDTable();
       titleInput.value = '';
       fileInput.value = '';
 
-      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
-      msg.textContent = `✅ Fichier "${file.name}" ajouté avec votre titre "${customTitle}" !`;
+      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
+      msg.textContent = `⚠️ Mode local temporaire : Fichier ajouté sur ce navigateur. Pour qu'il s'affiche sur d'autres PC ou téléphones, collez vos clés Firebase dans accueil.html.`;
       msg.classList.remove('hidden');
-      setTimeout(() => msg.classList.add('hidden'), 4000);
+      setTimeout(() => msg.classList.add('hidden'), 6000);
     }
 
-    function deleteTDFile(id) {
+    async function deleteTDFile(id, storagePath) {
       if (!confirm('Supprimer ce document de la liste ?')) return;
-      tdFiles = tdFiles.filter(f => f.id !== id);
+
+      if (isFirebaseReady && db && id && !String(id).startsWith('local_')) {
+        try {
+          if (storage && storagePath) {
+            try { await storage.ref(storagePath).delete(); } catch(e) { console.warn(e); }
+          }
+          await db.collection('td_files').doc(id).delete();
+        } catch (e) {
+          console.error("Erreur suppression TD:", e);
+          alert("Erreur lors de la suppression : " + e.message);
+        }
+        return;
+      }
+
+      tdFiles = tdFiles.filter(f => String(f.id) !== String(id));
       renderTDTable();
     }
 
@@ -1211,8 +1354,10 @@
     // ==========================================
     function renderTPTable() {
       const tbody = document.getElementById('tp-table-body');
+      if (!tbody) return;
       tbody.innerHTML = '';
-      document.getElementById('tp-count-badge').textContent = `${tpFiles.length} fichier(s)`;
+      const badge = document.getElementById('tp-count-badge');
+      if (badge) badge.textContent = `${tpFiles.length} fichier(s)`;
 
       if (tpFiles.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Aucun protocole ou modèle dans le tableau. Saisissez votre titre personnalisé ci-dessus et téléversez votre fichier (PDF, MATLAB, Simulink ou Excel).</td></tr>';
@@ -1222,24 +1367,25 @@
       tpFiles.forEach((file) => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-emerald-50 transition-colors';
+        const info = file.info || getFileInfo(file.name) || { icon: '📄', label: 'PDF', badge: 'bg-emerald-100 text-emerald-800', type: 'pdf' };
         tr.innerHTML = `
           <td class="p-3.5 font-bold text-gray-800">${file.customName}</td>
           <td class="p-3.5 text-xs text-gray-600 font-mono flex items-center gap-1.5">
-            <span class="text-lg">${file.info.icon}</span>
+            <span class="text-lg">${info.icon}</span>
             <span>${file.name}</span>
           </td>
           <td class="p-3.5">
-            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${file.info.badge}">
-              ${file.info.label}
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${info.badge}">
+              ${info.label}
             </span>
           </td>
-          <td class="p-3.5 text-xs text-gray-500">${file.date}</td>
-          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size}</td>
+          <td class="p-3.5 text-xs text-gray-500">${file.date || ''}</td>
+          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size || ''}</td>
           <td class="p-3.5 text-right space-x-1">
-            <button onclick="downloadFileLocal('${file.name}', '${file.info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow">
+            <button onclick="downloadFile('${file.url || ''}', '${file.name}', '${info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow">
               ⬇ Télécharger
             </button>
-            <button onclick="deleteTPFile(${file.id})" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100">
+            <button onclick="deleteTPFile('${file.id}', '${file.storagePath || ''}')" class="px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 text-red-600 hover:bg-red-100" title="Supprimer">
               🗑️
             </button>
           </td>
@@ -1248,11 +1394,12 @@
       });
     }
 
-    function handleUploadTP(e) {
+    async function handleUploadTP(e) {
       e.preventDefault();
       const titleInput = document.getElementById('tp-upload-title');
       const fileInput = document.getElementById('tp-upload-file');
       const msg = document.getElementById('tp-upload-msg');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
 
       if (!fileInput.files || fileInput.files.length === 0) return;
       const file = fileInput.files[0];
@@ -1277,29 +1424,96 @@
       const sizeStr = sizeKB > 1024 ? (sizeKB / 1024).toFixed(1) + ' Mo' : sizeKB + ' Ko';
       const today = new Date().toLocaleDateString('fr-FR');
 
+      // TÉLÉVERSEMENT CLOUD VERS FIREBASE (PARTAGE MULTI-APPAREILS)
+      if (isFirebaseReady && storage && db) {
+        try {
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="inline-block animate-spin mr-1">⏳</span> Envoi vers le Cloud...';
+          }
+          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200';
+          msg.textContent = `⏳ Envoi du fichier "${file.name}" vers le stockage Cloud Firebase... Veuillez patienter.`;
+          msg.classList.remove('hidden');
+
+          const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+          const storagePath = `tp_files/${Date.now()}_${cleanFileName}`;
+          const storageRef = storage.ref(storagePath);
+          const uploadSnapshot = await storageRef.put(file);
+          const downloadUrl = await uploadSnapshot.ref.getDownloadURL();
+
+          await db.collection('tp_files').add({
+            customName: customTitle,
+            name: file.name,
+            storagePath: storagePath,
+            url: downloadUrl,
+            date: today,
+            size: sizeStr,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          titleInput.value = '';
+          fileInput.value = '';
+          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+          msg.textContent = `✅ Fichier "${file.name}" téléversé avec succès ! Il est instantanément visible sur tous les ordinateurs et téléphones.`;
+          setTimeout(() => msg.classList.add('hidden'), 5000);
+        } catch (uploadError) {
+          console.error("Erreur d'upload Firebase TP:", uploadError);
+          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
+          msg.textContent = `❌ Erreur Cloud : ${uploadError.message}. Vérifiez les règles de sécurité de Firebase Storage.`;
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>➕</span> Ajouter au tableau TP';
+          }
+        }
+        return;
+      }
+
+      // MODE LOCAL DE SECOURS (si les clés Firebase ne sont pas encore collées)
       tpFiles.push({
-        id: Date.now(),
+        id: 'local_' + Date.now(),
         customName: customTitle,
         name: file.name,
         info: info,
         date: today,
         size: sizeStr
       });
-
       renderTPTable();
       titleInput.value = '';
       fileInput.value = '';
 
-      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
-      msg.textContent = `✅ Fichier "${file.name}" ajouté avec votre titre "${customTitle}" !`;
+      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
+      msg.textContent = `⚠️ Mode local temporaire : Fichier ajouté sur ce navigateur. Pour qu'il s'affiche sur d'autres PC ou téléphones, collez vos clés Firebase dans accueil.html.`;
       msg.classList.remove('hidden');
-      setTimeout(() => msg.classList.add('hidden'), 4000);
+      setTimeout(() => msg.classList.add('hidden'), 6000);
     }
 
-    function deleteTPFile(id) {
+    async function deleteTPFile(id, storagePath) {
       if (!confirm('Supprimer ce protocole de la liste ?')) return;
-      tpFiles = tpFiles.filter(f => f.id !== id);
+
+      if (isFirebaseReady && db && id && !String(id).startsWith('local_')) {
+        try {
+          if (storage && storagePath) {
+            try { await storage.ref(storagePath).delete(); } catch(e) { console.warn(e); }
+          }
+          await db.collection('tp_files').doc(id).delete();
+        } catch (e) {
+          console.error("Erreur suppression TP:", e);
+          alert("Erreur lors de la suppression : " + e.message);
+        }
+        return;
+      }
+
+      tpFiles = tpFiles.filter(f => String(f.id) !== String(id));
       renderTPTable();
+    }
+
+    function downloadFile(url, fileName, type) {
+      if (url) {
+        window.open(url, '_blank');
+        return;
+      }
+      downloadFileLocal(fileName, type);
     }
 
     function downloadFileLocal(fileName, type) {
@@ -1800,6 +2014,10 @@
       document.body.removeChild(a);
     }
 
+    // Initialisation au chargement de la page
+    window.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
+    });
 
   </script>
 </body>
