@@ -6,10 +6,6 @@
   <title>Énergie Renouvelable Photovoltaïque – LPE E2I – UCD</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <!-- Firebase SDKs (Cloud Storage & Base de données temps réel Firestore) -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
   <style>
     .bg-ucd-blue { background-color: #1e40af; }
     .bg-ucd-blue-dark { background-color: #0f172a; }
@@ -342,29 +338,46 @@
           </div>
         </div>
 
-        <!-- Zone d'Upload avec zone de saisie du nom libre -->
+        <!-- Zone d'Ajout via Google Drive / OneDrive -->
         <div class="bg-white rounded-2xl border border-purple-200 p-6 mb-8 shadow-sm">
-          <h2 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
-            <span>📤</span> Téléverser un fichier pour les TD
-          </h2>
-          <p class="text-xs text-gray-500 mb-4">
-            Formats acceptés : <strong>PDF (.pdf)</strong>, <strong>MATLAB (.m)</strong>, <strong>Simulink (.slx)</strong> et <strong>Excel (.xlsx, .xls)</strong>.
-          </p>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <span>📁</span> Partager un document TD (Google Drive / OneDrive)
+              </h2>
+              <p class="text-xs text-gray-500 mt-1">
+                Déposez vos énoncés PDF, codes ou calculs sur <strong>Google Drive</strong> ou <strong>OneDrive</strong>, puis collez simplement le lien de partage ci-dessous.
+              </p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700 self-start sm:self-center">
+              <span>☁️</span> Accès Cloud Universel
+            </span>
+          </div>
 
-          <form onsubmit="handleUploadTD(event)" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form onsubmit="handleAddDocTD(event)" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label class="block text-xs font-semibold text-gray-700 mb-1">Nom / Titre du fichier (saisi par vous-même) *</label>
-                <input id="td-upload-title" type="text" required placeholder="Tapez ici le nom ou titre que vous souhaitez donner..." class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Titre du document *</label>
+                <input id="td-doc-title" type="text" required placeholder="Ex: TD 1 - Dimensionnement PV autonome" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-gray-700 mb-1">Choisir le fichier * (.pdf, .m, .slx, .xlsx)</label>
-                <input id="td-upload-file" type="file" required accept=".pdf,.m,.slx,.mdl,.xlsx,.xls" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Format du document *</label>
+                <select id="td-doc-format" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none bg-white">
+                  <option value="pdf">📄 Document PDF (.pdf)</option>
+                  <option value="matlab">💻 Script MATLAB (.m)</option>
+                  <option value="simulink">⚙️ Modèle Simulink (.slx)</option>
+                  <option value="excel">📊 Feuille Excel (.xlsx, .xls)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Lien partagé Google Drive / OneDrive *</label>
+                <input id="td-doc-url" type="url" required placeholder="https://drive.google.com/file/d/.../view?usp=sharing" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none text-xs font-mono">
               </div>
             </div>
-            <div class="flex justify-end gap-2">
-              <button type="submit" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs transition shadow flex items-center gap-2">
-                <span>➕</span> Ajouter au tableau TD
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+              <span class="text-xs text-gray-400">💡 <strong>Conseil :</strong> Sur Google Drive, réglez l'accès sur <em>« Tous les utilisateurs disposant du lien peuvent consulter »</em>.</span>
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs transition shadow flex items-center justify-center gap-2">
+                <span>➕</span> Publier le document TD
               </button>
             </div>
           </form>
@@ -374,19 +387,18 @@
         <!-- Tableau des fichiers TD -->
         <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
           <div class="p-4 bg-gray-50 border-b flex items-center justify-between">
-            <h3 class="font-bold text-sm text-gray-800">📄 Tableau des fichiers TD téléversés</h3>
-            <span id="td-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">0 fichier</span>
+            <h3 class="font-bold text-sm text-gray-800">📄 Tableau des documents TD disponibles</h3>
+            <span id="td-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">0 document</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-gray-600">
               <thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs border-b">
                 <tr>
-                  <th class="p-3.5">Nom saisi</th>
-                  <th class="p-3.5">Fichier source</th>
+                  <th class="p-3.5">Titre du document</th>
                   <th class="p-3.5">Format</th>
+                  <th class="p-3.5">Stockage Cloud</th>
                   <th class="p-3.5">Date</th>
-                  <th class="p-3.5">Taille</th>
-                  <th class="p-3.5 text-right">Actions</th>
+                  <th class="p-3.5 text-right">Consulter / Télécharger</th>
                 </tr>
               </thead>
               <tbody id="td-table-body" class="divide-y divide-gray-100">
@@ -415,29 +427,46 @@
           </div>
         </div>
 
-        <!-- Zone d'Upload avec zone de saisie du nom libre -->
+        <!-- Zone d'Ajout via Google Drive / OneDrive -->
         <div class="bg-white rounded-2xl border border-emerald-200 p-6 mb-8 shadow-sm">
-          <h2 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
-            <span>📤</span> Téléverser un fichier pour les TP
-          </h2>
-          <p class="text-xs text-gray-500 mb-4">
-            Formats acceptés : <strong>PDF (.pdf)</strong>, <strong>MATLAB (.m)</strong>, <strong>Simulink (.slx)</strong> et <strong>Excel (.xlsx, .xls)</strong>.
-          </p>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <span>📁</span> Partager un protocole ou modèle TP (Google Drive / OneDrive)
+              </h2>
+              <p class="text-xs text-gray-500 mt-1">
+                Déposez vos énoncés PDF, codes MATLAB, modèles Simulink ou fichiers Excel sur <strong>Google Drive</strong> ou <strong>OneDrive</strong>, puis collez le lien ci-dessous.
+              </p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 self-start sm:self-center">
+              <span>☁️</span> Accès Cloud Universel
+            </span>
+          </div>
 
-          <form onsubmit="handleUploadTP(event)" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form onsubmit="handleAddDocTP(event)" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label class="block text-xs font-semibold text-gray-700 mb-1">Nom / Titre du TP (saisi par vous-même) *</label>
-                <input id="tp-upload-title" type="text" required placeholder="Tapez ici le nom ou titre que vous souhaitez donner..." class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Titre du protocole / modèle *</label>
+                <input id="tp-doc-title" type="text" required placeholder="Ex: TP 1 - Caractérisation I-V panneau PV" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-gray-700 mb-1">Choisir le fichier * (.pdf, .m, .slx, .xlsx)</label>
-                <input id="tp-upload-file" type="file" required accept=".pdf,.m,.slx,.mdl,.xlsx,.xls" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Format du document *</label>
+                <select id="tp-doc-format" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white">
+                  <option value="pdf">📄 Énoncé / Protocole PDF (.pdf)</option>
+                  <option value="simulink">⚙️ Modèle Simulink (.slx)</option>
+                  <option value="matlab">💻 Script MATLAB (.m)</option>
+                  <option value="excel">📊 Mesures / Données Excel (.xlsx, .xls)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Lien partagé Google Drive / OneDrive *</label>
+                <input id="tp-doc-url" type="url" required placeholder="https://drive.google.com/file/d/.../view?usp=sharing" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none text-xs font-mono">
               </div>
             </div>
-            <div class="flex justify-end gap-2">
-              <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition shadow flex items-center gap-2">
-                <span>➕</span> Ajouter au tableau TP
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+              <span class="text-xs text-gray-400">💡 <strong>Conseil :</strong> Vérifiez que le lien partagé est en mode lecture publique pour vos étudiants.</span>
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition shadow flex items-center justify-center gap-2">
+                <span>➕</span> Publier le protocole TP
               </button>
             </div>
           </form>
@@ -447,19 +476,18 @@
         <!-- Tableau des fichiers TP -->
         <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
           <div class="p-4 bg-gray-50 border-b flex items-center justify-between">
-            <h3 class="font-bold text-sm text-gray-800">📄 Tableau des fichiers TP téléversés</h3>
-            <span id="tp-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">0 fichier</span>
+            <h3 class="font-bold text-sm text-gray-800">📄 Tableau des protocoles et modèles TP</h3>
+            <span id="tp-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">0 protocole</span>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-gray-600">
               <thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs border-b">
                 <tr>
-                  <th class="p-3.5">Nom saisi</th>
-                  <th class="p-3.5">Fichier source</th>
+                  <th class="p-3.5">Titre du protocole</th>
                   <th class="p-3.5">Format</th>
+                  <th class="p-3.5">Stockage Cloud</th>
                   <th class="p-3.5">Date</th>
-                  <th class="p-3.5">Taille</th>
-                  <th class="p-3.5 text-right">Actions</th>
+                  <th class="p-3.5 text-right">Consulter / Télécharger</th>
                 </tr>
               </thead>
               <tbody id="tp-table-body" class="divide-y divide-gray-100">
@@ -1000,85 +1028,131 @@
     ];
 
     // ==========================================
-    // CONFIGURATION FIREBASE (SYNCHRONISATION MULTI-APPAREILS)
+    // DONNÉES TD & TP : OPTION C (PARTAGE GOOGLE DRIVE / ONEDRIVE)
     // ==========================================
-    // REMPLACEZ CI-DESSOUS PAR VOS CLÉS OBTENUES SUR console.firebase.google.com :
-    const firebaseConfig = {
-      apiKey: "VOTRE_API_KEY",
-      authDomain: "VOTRE_PROJECT_ID.firebaseapp.com",
-      projectId: "VOTRE_PROJECT_ID",
-      storageBucket: "VOTRE_PROJECT_ID.appspot.com",
-      messagingSenderId: "VOTRE_MESSAGING_SENDER_ID",
-      appId: "VOTRE_APP_ID"
-    };
-
-    let isFirebaseReady = false;
-    let db = null;
-    let storage = null;
-    let tdFiles = [];
-    let tpFiles = [];
-
-    function initFirebase() {
-      try {
-        if (typeof firebase !== 'undefined' && firebaseConfig.apiKey && firebaseConfig.apiKey !== "VOTRE_API_KEY") {
-          if (!firebase.apps || !firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-          }
-          db = firebase.firestore();
-          storage = firebase.storage();
-          isFirebaseReady = true;
-          console.log("✅ Firebase connecté avec succès pour LEP_E2I_ERP !");
-          listenRealtimeData();
-        } else {
-          console.warn("⚠️ Firebase : en attente de vos clés réelles dans firebaseConfig. Le mode local reste actif.");
-        }
-      } catch (err) {
-        console.error("Erreur Firebase:", err);
+    // Ces listes définissent les documents disponibles pour tous les étudiants.
+    // Vous pouvez y insérer directement vos propres liens Google Drive ou OneDrive :
+    const DEFAULT_TD_DOCS = [
+      {
+        id: 1,
+        title: "TD 1 : Caractérisation de la cellule photovoltaïque et bilan de puissance",
+        format: "pdf",
+        url: "https://drive.google.com/",
+        date: "16/11/2026"
+      },
+      {
+        id: 2,
+        title: "TD 2 : Dimensionnement d'un système photovoltaïque autonome (24V)",
+        format: "pdf",
+        url: "https://drive.google.com/",
+        date: "16/11/2026"
+      },
+      {
+        id: 3,
+        title: "TD 3 : Étude des convertisseurs DC-DC et commande MPPT P&O",
+        format: "pdf",
+        url: "https://drive.google.com/",
+        date: "16/11/2026"
       }
-      renderTDTable();
-      renderTPTable();
+    ];
+
+    const DEFAULT_TP_DOCS = [
+      {
+        id: 1,
+        title: "TP 1 : Relevé des caractéristiques I(V) et P(V) d'un module PV sous éclairement variable",
+        format: "pdf",
+        url: "https://drive.google.com/",
+        date: "16/11/2026"
+      },
+      {
+        id: 2,
+        title: "TP 2 : Modélisation sous MATLAB / Simulink de la chaîne de conversion PV avec hacheur Boost",
+        format: "simulink",
+        url: "https://drive.google.com/",
+        date: "16/11/2026"
+      },
+      {
+        id: 3,
+        title: "TP 3 : Script d'extraction des paramètres de la cellule PV (Rs, Rsh, Iph, I0)",
+        format: "matlab",
+        url: "https://drive.google.com/",
+        date: "16/11/2026"
+      },
+      {
+        id: 4,
+        title: "TP 4 : Fichier de mesures expérimentales et bilan de rendement énergétique",
+        format: "excel",
+        url: "https://drive.google.com/",
+        date: "16/11/2026"
+      }
+    ];
+
+    function loadTDDocs() {
+      try {
+        const saved = localStorage.getItem('e2i_td_drive_docs');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+      return [...DEFAULT_TD_DOCS];
     }
 
-    function listenRealtimeData() {
-      if (!isFirebaseReady || !db) return;
+    function loadTPDocs() {
+      try {
+        const saved = localStorage.getItem('e2i_tp_drive_docs');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+      return [...DEFAULT_TP_DOCS];
+    }
 
-      // Écoute temps réel TD
-      db.collection('td_files').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
-        tdFiles = [];
-        snapshot.forEach((doc) => {
-          const d = doc.data();
-          tdFiles.push({
-            id: doc.id,
-            customName: d.customName,
-            name: d.name,
-            storagePath: d.storagePath,
-            url: d.url,
-            info: getFileInfo(d.name),
-            date: d.date,
-            size: d.size
-          });
-        });
-        renderTDTable();
-      }, (err) => console.error("Erreur Firestore TD:", err));
+    let tdDocs = loadTDDocs();
+    let tpDocs = loadTPDocs();
 
-      // Écoute temps réel TP
-      db.collection('tp_files').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
-        tpFiles = [];
-        snapshot.forEach((doc) => {
-          const d = doc.data();
-          tpFiles.push({
-            id: doc.id,
-            customName: d.customName,
-            name: d.name,
-            storagePath: d.storagePath,
-            url: d.url,
-            info: getFileInfo(d.name),
-            date: d.date,
-            size: d.size
-          });
-        });
-        renderTPTable();
-      }, (err) => console.error("Erreur Firestore TP:", err));
+    function saveTDDocs() {
+      try {
+        localStorage.setItem('e2i_td_drive_docs', JSON.stringify(tdDocs));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function saveTPDocs() {
+      try {
+        localStorage.setItem('e2i_tp_drive_docs', JSON.stringify(tpDocs));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function getFormatBadge(format) {
+      const f = (format || 'pdf').toLowerCase();
+      if (f === 'pdf') {
+        return { icon: '📄', label: 'PDF', badge: 'bg-red-100 text-red-700' };
+      } else if (f === 'matlab' || f === 'm') {
+        return { icon: '💻', label: 'MATLAB (.m)', badge: 'bg-orange-100 text-orange-800' };
+      } else if (f === 'simulink' || f === 'slx') {
+        return { icon: '⚙️', label: 'Simulink (.slx)', badge: 'bg-blue-100 text-blue-800' };
+      } else if (f === 'excel' || f === 'xlsx' || f === 'xls') {
+        return { icon: '📊', label: 'Excel (.xlsx)', badge: 'bg-emerald-100 text-emerald-800' };
+      }
+      return { icon: '📁', label: f.toUpperCase(), badge: 'bg-gray-100 text-gray-700' };
+    }
+
+    function detectCloudService(url) {
+      if (!url) return '<span class="text-gray-400">Lien web</span>';
+      const u = url.toLowerCase();
+      if (u.includes('drive.google.com') || u.includes('docs.google.com')) {
+        return '<span class="inline-flex items-center gap-1 font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">Google Drive</span>';
+      }
+      if (u.includes('1drv.ms') || u.includes('onedrive.live.com') || u.includes('sharepoint.com')) {
+        return '<span class="inline-flex items-center gap-1 font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-100">OneDrive</span>';
+      }
+      if (u.includes('dropbox.com')) {
+        return '<span class="inline-flex items-center gap-1 font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">Dropbox</span>';
+      }
+      return '<span class="text-gray-600 font-medium bg-gray-50 px-2 py-0.5 rounded-md border border-gray-200">Lien Cloud</span>';
     }
 
     function getFileInfo(fileName) {
@@ -1191,336 +1265,155 @@
     }
 
     // ==========================================
-    // GESTION DU TABLEAU TD (PDF, MATLAB, SIMULINK, EXCEL)
+    // GESTION DU TABLEAU TD (GOOGLE DRIVE / ONEDRIVE)
     // ==========================================
     function renderTDTable() {
       const tbody = document.getElementById('td-table-body');
       if (!tbody) return;
       tbody.innerHTML = '';
       const badge = document.getElementById('td-count-badge');
-      if (badge) badge.textContent = `${tdFiles.length} fichier(s)`;
+      if (badge) badge.textContent = `${tdDocs.length} document(s)`;
 
-      if (tdFiles.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Aucun document dans le tableau. Saisissez votre titre personnalisé ci-dessus et téléversez votre fichier (PDF, MATLAB, Simulink ou Excel).</td></tr>';
+      if (tdDocs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Aucun document TD disponible pour le moment. Renseignez un lien Google Drive ou OneDrive ci-dessus pour le publier.</td></tr>';
         return;
       }
 
-      tdFiles.forEach((file) => {
+      tdDocs.forEach((doc) => {
+        const info = getFormatBadge(doc.format);
+        const cloud = detectCloudService(doc.url);
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-purple-50 transition-colors';
-        const info = file.info || getFileInfo(file.name) || { icon: '📄', label: 'PDF', badge: 'bg-red-100 text-red-700', type: 'pdf' };
         tr.innerHTML = `
-          <td class="p-3.5 font-bold text-gray-800">${file.customName}</td>
-          <td class="p-3.5 text-xs text-gray-600 font-mono flex items-center gap-1.5">
-            <span class="text-lg">${info.icon}</span>
-            <span>${file.name}</span>
-          </td>
+          <td class="p-3.5 font-bold text-gray-800">${doc.title}</td>
           <td class="p-3.5">
             <span class="px-2.5 py-1 rounded-full text-xs font-bold ${info.badge}">
-              ${info.label}
+              ${info.icon} ${info.label}
             </span>
           </td>
-          <td class="p-3.5 text-xs text-gray-500">${file.date || ''}</td>
-          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size || ''}</td>
+          <td class="p-3.5 text-xs">${cloud}</td>
+          <td class="p-3.5 text-xs text-gray-500">${doc.date || ''}</td>
           <td class="p-3.5 text-right">
-            <button onclick="downloadFile('${file.url || ''}', '${file.name}', '${info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 shadow">
-              ⬇ Télécharger
-            </button>
+            <a href="${doc.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-purple-600 text-white hover:bg-purple-700 shadow transition">
+              <span>🔗</span> Ouvrir / Télécharger
+            </a>
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    async function handleUploadTD(e) {
+    function handleAddDocTD(e) {
       e.preventDefault();
-      const titleInput = document.getElementById('td-upload-title');
-      const fileInput = document.getElementById('td-upload-file');
+      const titleInput = document.getElementById('td-doc-title');
+      const formatInput = document.getElementById('td-doc-format');
+      const urlInput = document.getElementById('td-doc-url');
       const msg = document.getElementById('td-upload-msg');
-      const submitBtn = e.target.querySelector('button[type="submit"]');
 
-      if (!fileInput.files || fileInput.files.length === 0) return;
-      const file = fileInput.files[0];
-      const customTitle = titleInput.value.trim();
+      const title = titleInput.value.trim();
+      const format = formatInput.value;
+      const url = urlInput.value.trim();
 
-      if (!customTitle) {
+      if (!title || !url) {
         msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
-        msg.textContent = '⚠️ Veuillez saisir un nom ou titre pour ce fichier dans la zone de texte.';
+        msg.textContent = '⚠️ Veuillez renseigner le titre du document et le lien partagé Google Drive / OneDrive.';
         msg.classList.remove('hidden');
         return;
       }
 
-      const info = getFileInfo(file.name);
-      if (!info) {
-        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
-        msg.textContent = '❌ Format non supporté. Formats acceptés : PDF (.pdf), MATLAB (.m), Simulink (.slx) et Excel (.xlsx, .xls).';
-        msg.classList.remove('hidden');
-        return;
-      }
-
-      const sizeKB = Math.round(file.size / 1024);
-      const sizeStr = sizeKB > 1024 ? (sizeKB / 1024).toFixed(1) + ' Mo' : sizeKB + ' Ko';
-      const today = new Date().toLocaleDateString('fr-FR');
-
-      // TÉLÉVERSEMENT CLOUD VERS FIREBASE (PARTAGE MULTI-APPAREILS)
-      if (isFirebaseReady && storage && db) {
-        try {
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="inline-block animate-spin mr-1">⏳</span> Envoi vers le Cloud...';
-          }
-          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200';
-          msg.textContent = `⏳ Envoi du fichier "${file.name}" vers le stockage Cloud Firebase... Veuillez patienter.`;
-          msg.classList.remove('hidden');
-
-          const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-          const storagePath = `td_files/${Date.now()}_${cleanFileName}`;
-          const storageRef = storage.ref(storagePath);
-          const uploadSnapshot = await storageRef.put(file);
-          const downloadUrl = await uploadSnapshot.ref.getDownloadURL();
-
-          await db.collection('td_files').add({
-            customName: customTitle,
-            name: file.name,
-            storagePath: storagePath,
-            url: downloadUrl,
-            date: today,
-            size: sizeStr,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          titleInput.value = '';
-          fileInput.value = '';
-          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
-          msg.textContent = `✅ Fichier "${file.name}" téléversé avec succès ! Il est instantanément visible sur tous les ordinateurs et téléphones.`;
-          setTimeout(() => msg.classList.add('hidden'), 5000);
-        } catch (uploadError) {
-          console.error("Erreur d'upload Firebase TD:", uploadError);
-          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
-          msg.textContent = `❌ Erreur Cloud : ${uploadError.message}. Vérifiez les règles de sécurité de Firebase Storage.`;
-        } finally {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span>➕</span> Ajouter au tableau TD';
-          }
-        }
-        return;
-      }
-
-      // MODE LOCAL DE SECOURS (si les clés Firebase ne sont pas encore collées)
-      tdFiles.push({
-        id: 'local_' + Date.now(),
-        customName: customTitle,
-        name: file.name,
-        info: info,
-        date: today,
-        size: sizeStr
+      tdDocs.unshift({
+        id: Date.now(),
+        title: title,
+        format: format,
+        url: url,
+        date: new Date().toLocaleDateString('fr-FR')
       });
+
+      saveTDDocs();
       renderTDTable();
+
       titleInput.value = '';
-      fileInput.value = '';
-
-      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
-      msg.textContent = `⚠️ Mode local temporaire : Fichier ajouté sur ce navigateur. Pour qu'il s'affiche sur d'autres PC ou téléphones, collez vos clés Firebase dans accueil.html.`;
+      urlInput.value = '';
+      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+      msg.textContent = `✅ Document TD "${title}" ajouté avec succès ! Accessible via votre lien Cloud.`;
       msg.classList.remove('hidden');
-      setTimeout(() => msg.classList.add('hidden'), 6000);
-    }
-
-    async function deleteTDFile(id, storagePath) {
-      if (!confirm('Supprimer ce document de la liste ?')) return;
-
-      if (isFirebaseReady && db && id && !String(id).startsWith('local_')) {
-        try {
-          if (storage && storagePath) {
-            try { await storage.ref(storagePath).delete(); } catch(e) { console.warn(e); }
-          }
-          await db.collection('td_files').doc(id).delete();
-        } catch (e) {
-          console.error("Erreur suppression TD:", e);
-          alert("Erreur lors de la suppression : " + e.message);
-        }
-        return;
-      }
-
-      tdFiles = tdFiles.filter(f => String(f.id) !== String(id));
-      renderTDTable();
+      setTimeout(() => msg.classList.add('hidden'), 4000);
     }
 
     // ==========================================
-    // GESTION DU TABLEAU TP (PDF, MATLAB, SIMULINK, EXCEL)
+    // GESTION DU TABLEAU TP (GOOGLE DRIVE / ONEDRIVE)
     // ==========================================
     function renderTPTable() {
       const tbody = document.getElementById('tp-table-body');
       if (!tbody) return;
       tbody.innerHTML = '';
       const badge = document.getElementById('tp-count-badge');
-      if (badge) badge.textContent = `${tpFiles.length} fichier(s)`;
+      if (badge) badge.textContent = `${tpDocs.length} protocole(s)`;
 
-      if (tpFiles.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Aucun protocole ou modèle dans le tableau. Saisissez votre titre personnalisé ci-dessus et téléversez votre fichier (PDF, MATLAB, Simulink ou Excel).</td></tr>';
+      if (tpDocs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Aucun protocole ou modèle TP pour le moment. Renseignez un lien Google Drive ou OneDrive ci-dessus pour le publier.</td></tr>';
         return;
       }
 
-      tpFiles.forEach((file) => {
+      tpDocs.forEach((doc) => {
+        const info = getFormatBadge(doc.format);
+        const cloud = detectCloudService(doc.url);
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-emerald-50 transition-colors';
-        const info = file.info || getFileInfo(file.name) || { icon: '📄', label: 'PDF', badge: 'bg-emerald-100 text-emerald-800', type: 'pdf' };
         tr.innerHTML = `
-          <td class="p-3.5 font-bold text-gray-800">${file.customName}</td>
-          <td class="p-3.5 text-xs text-gray-600 font-mono flex items-center gap-1.5">
-            <span class="text-lg">${info.icon}</span>
-            <span>${file.name}</span>
-          </td>
+          <td class="p-3.5 font-bold text-gray-800">${doc.title}</td>
           <td class="p-3.5">
             <span class="px-2.5 py-1 rounded-full text-xs font-bold ${info.badge}">
-              ${info.label}
+              ${info.icon} ${info.label}
             </span>
           </td>
-          <td class="p-3.5 text-xs text-gray-500">${file.date || ''}</td>
-          <td class="p-3.5 text-xs font-semibold text-gray-600">${file.size || ''}</td>
+          <td class="p-3.5 text-xs">${cloud}</td>
+          <td class="p-3.5 text-xs text-gray-500">${doc.date || ''}</td>
           <td class="p-3.5 text-right">
-            <button onclick="downloadFile('${file.url || ''}', '${file.name}', '${info.type}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow">
-              ⬇ Télécharger
-            </button>
+            <a href="${doc.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 shadow transition">
+              <span>🔗</span> Ouvrir / Télécharger
+            </a>
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    async function handleUploadTP(e) {
+    function handleAddDocTP(e) {
       e.preventDefault();
-      const titleInput = document.getElementById('tp-upload-title');
-      const fileInput = document.getElementById('tp-upload-file');
+      const titleInput = document.getElementById('tp-doc-title');
+      const formatInput = document.getElementById('tp-doc-format');
+      const urlInput = document.getElementById('tp-doc-url');
       const msg = document.getElementById('tp-upload-msg');
-      const submitBtn = e.target.querySelector('button[type="submit"]');
 
-      if (!fileInput.files || fileInput.files.length === 0) return;
-      const file = fileInput.files[0];
-      const customTitle = titleInput.value.trim();
+      const title = titleInput.value.trim();
+      const format = formatInput.value;
+      const url = urlInput.value.trim();
 
-      if (!customTitle) {
+      if (!title || !url) {
         msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
-        msg.textContent = '⚠️ Veuillez saisir un nom ou titre pour ce fichier dans la zone de texte.';
+        msg.textContent = '⚠️ Veuillez renseigner le titre du protocole et le lien partagé Google Drive / OneDrive.';
         msg.classList.remove('hidden');
         return;
       }
 
-      const info = getFileInfo(file.name);
-      if (!info) {
-        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
-        msg.textContent = '❌ Format non supporté. Formats acceptés : PDF (.pdf), MATLAB (.m), Simulink (.slx) et Excel (.xlsx, .xls).';
-        msg.classList.remove('hidden');
-        return;
-      }
-
-      const sizeKB = Math.round(file.size / 1024);
-      const sizeStr = sizeKB > 1024 ? (sizeKB / 1024).toFixed(1) + ' Mo' : sizeKB + ' Ko';
-      const today = new Date().toLocaleDateString('fr-FR');
-
-      // TÉLÉVERSEMENT CLOUD VERS FIREBASE (PARTAGE MULTI-APPAREILS)
-      if (isFirebaseReady && storage && db) {
-        try {
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="inline-block animate-spin mr-1">⏳</span> Envoi vers le Cloud...';
-          }
-          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-blue-100 text-blue-800 border border-blue-200';
-          msg.textContent = `⏳ Envoi du fichier "${file.name}" vers le stockage Cloud Firebase... Veuillez patienter.`;
-          msg.classList.remove('hidden');
-
-          const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-          const storagePath = `tp_files/${Date.now()}_${cleanFileName}`;
-          const storageRef = storage.ref(storagePath);
-          const uploadSnapshot = await storageRef.put(file);
-          const downloadUrl = await uploadSnapshot.ref.getDownloadURL();
-
-          await db.collection('tp_files').add({
-            customName: customTitle,
-            name: file.name,
-            storagePath: storagePath,
-            url: downloadUrl,
-            date: today,
-            size: sizeStr,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          titleInput.value = '';
-          fileInput.value = '';
-          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
-          msg.textContent = `✅ Fichier "${file.name}" téléversé avec succès ! Il est instantanément visible sur tous les ordinateurs et téléphones.`;
-          setTimeout(() => msg.classList.add('hidden'), 5000);
-        } catch (uploadError) {
-          console.error("Erreur d'upload Firebase TP:", uploadError);
-          msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-red-100 text-red-800 border border-red-200';
-          msg.textContent = `❌ Erreur Cloud : ${uploadError.message}. Vérifiez les règles de sécurité de Firebase Storage.`;
-        } finally {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span>➕</span> Ajouter au tableau TP';
-          }
-        }
-        return;
-      }
-
-      // MODE LOCAL DE SECOURS (si les clés Firebase ne sont pas encore collées)
-      tpFiles.push({
-        id: 'local_' + Date.now(),
-        customName: customTitle,
-        name: file.name,
-        info: info,
-        date: today,
-        size: sizeStr
+      tpDocs.unshift({
+        id: Date.now(),
+        title: title,
+        format: format,
+        url: url,
+        date: new Date().toLocaleDateString('fr-FR')
       });
+
+      saveTPDocs();
       renderTPTable();
+
       titleInput.value = '';
-      fileInput.value = '';
-
-      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
-      msg.textContent = `⚠️ Mode local temporaire : Fichier ajouté sur ce navigateur. Pour qu'il s'affiche sur d'autres PC ou téléphones, collez vos clés Firebase dans accueil.html.`;
+      urlInput.value = '';
+      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
+      msg.textContent = `✅ Protocole TP "${title}" ajouté avec succès ! Accessible via votre lien Cloud.`;
       msg.classList.remove('hidden');
-      setTimeout(() => msg.classList.add('hidden'), 6000);
-    }
-
-    async function deleteTPFile(id, storagePath) {
-      if (!confirm('Supprimer ce protocole de la liste ?')) return;
-
-      if (isFirebaseReady && db && id && !String(id).startsWith('local_')) {
-        try {
-          if (storage && storagePath) {
-            try { await storage.ref(storagePath).delete(); } catch(e) { console.warn(e); }
-          }
-          await db.collection('tp_files').doc(id).delete();
-        } catch (e) {
-          console.error("Erreur suppression TP:", e);
-          alert("Erreur lors de la suppression : " + e.message);
-        }
-        return;
-      }
-
-      tpFiles = tpFiles.filter(f => String(f.id) !== String(id));
-      renderTPTable();
-    }
-
-    function downloadFile(url, fileName, type) {
-      if (url) {
-        window.open(url, '_blank');
-        return;
-      }
-      downloadFileLocal(fileName, type);
-    }
-
-    function downloadFileLocal(fileName, type) {
-      let mime = "application/octet-stream";
-      if (type === 'pdf') mime = "application/pdf";
-      else if (type === 'excel') mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-      else if (type === 'matlab') mime = "text/x-matlab";
-
-      const blob = new Blob(["Contenu du fichier photovoltaïque LPE E2I : " + fileName], { type: mime });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = fileName;
-      link.click();
+      setTimeout(() => msg.classList.add('hidden'), 4000);
     }
 
     // ==========================================
@@ -2010,7 +1903,8 @@
 
     // Initialisation au chargement de la page
     window.addEventListener('DOMContentLoaded', () => {
-      initFirebase();
+      renderTDTable();
+      renderTPTable();
     });
 
   </script>
