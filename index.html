@@ -441,20 +441,21 @@
         <!-- Gestion des ressources pédagogiques -->
         <section class="bg-white rounded-2xl border border-emerald-200 p-6 mb-8 shadow-sm">
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-            <div><h2 class="text-lg font-bold text-gray-800">📚 Gestion des cours, TD et TP</h2><p class="text-xs text-gray-500 mt-1">Ajoutez ici les chemins des fichiers déjà déposés dans votre dépôt GitHub.</p></div>
-            <button type="button" onclick="exportResourcesJSON()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow">📥 Télécharger resources.json</button>
+            <div><h2 class="text-lg font-bold text-gray-800">📚 Gestion des cours, TD et TP</h2><p class="text-xs text-gray-500 mt-1">Téléversez directement les documents depuis votre ordinateur vers votre dépôt GitHub.</p></div>
+            <button type="button" onclick="exportResourcesJSON()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow">📥 Exporter resources.json</button>
           </div>
-          <div class="rounded-xl bg-blue-50 border border-blue-200 p-3 mb-5 text-xs text-blue-900"><strong>Mode de publication :</strong> déposez d'abord le fichier dans le dépôt GitHub, par exemple <code>files/td/TD1.pdf</code>. Ajoutez ensuite ce chemin ci-dessous. Après vos modifications, téléchargez <code>resources.json</code> et remplacez le fichier du même nom à la racine du dépôt GitHub. Les changements seront alors visibles par tous les étudiants après la mise à jour de GitHub Pages.</div>
-          <form id="resource-form" onsubmit="handleAddResource(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+          <div class="rounded-xl bg-blue-50 border border-blue-200 p-3 mb-5 text-xs text-blue-900"><strong>Publication automatique :</strong> après l'envoi, le fichier est enregistré dans <code>files/cours/</code>, <code>files/td/</code> ou <code>files/tp/</code> et la liste <code>resources.json</code> est mise à jour dans GitHub. Il n'est plus nécessaire de saisir un chemin ou de remplacer manuellement le fichier JSON. Taille maximale par fichier : 15 Mo.</div>
+          <form id="resource-form" onsubmit="handleAddResource(event)" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3 items-end">
             <div><label class="block text-xs font-semibold text-gray-700 mb-1">Catégorie *</label><select id="resource-category" required class="w-full px-3 py-2.5 border rounded-xl text-sm bg-white"><option value="cours">Cours</option><option value="td">Travaux dirigés (TD)</option><option value="tp">Travaux pratiques (TP)</option></select></div>
             <div><label class="block text-xs font-semibold text-gray-700 mb-1">Titre du document *</label><input id="resource-title" required maxlength="140" placeholder="Ex. Chapitre 1 – Généralités" class="w-full px-3 py-2.5 border rounded-xl text-sm"></div>
             <div><label class="block text-xs font-semibold text-gray-700 mb-1">Format *</label><select id="resource-format" required class="w-full px-3 py-2.5 border rounded-xl text-sm bg-white"><option value="pdf">PDF</option><option value="matlab">MATLAB (.m)</option><option value="simulink">Simulink (.slx)</option><option value="excel">Excel (.xlsx, .xls)</option></select></div>
-            <div><label class="block text-xs font-semibold text-gray-700 mb-1">Chemin du fichier dans GitHub *</label><input id="resource-path" required placeholder="files/td/TD1.pdf" class="w-full px-3 py-2.5 border rounded-xl text-sm font-mono"></div>
-            <div class="md:col-span-4 flex flex-col sm:flex-row sm:items-center gap-3"><button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs">➕ Ajouter la ressource</button><span class="text-xs text-gray-500">Chemins autorisés : <code>files/cours/</code>, <code>files/td/</code> ou <code>files/tp/</code>.</span></div>
+            <div><label class="block text-xs font-semibold text-gray-700 mb-1">Choisir un fichier *</label><input id="resource-file" type="file" required accept=".pdf,.m,.slx,.xlsx,.xls" class="w-full text-xs file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 border rounded-xl p-1.5 bg-white"></div>
+            <div><label class="block text-xs font-semibold text-gray-700 mb-1">Code d'envoi administrateur *</label><input id="resource-upload-password" type="password" required autocomplete="off" placeholder="Code fourni par l'administrateur" class="w-full px-3 py-2.5 border rounded-xl text-sm"></div>
+            <div class="md:col-span-2 xl:col-span-5 flex flex-col sm:flex-row sm:items-center gap-3"><button id="resource-submit-btn" type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs">⬆️ Téléverser et publier</button><span class="text-xs text-gray-500">Cours : PDF. TD et TP : PDF, MATLAB (.m), Simulink (.slx) ou Excel (.xlsx/.xls).</span></div>
           </form>
-          <div id="resource-form-msg" class="hidden mt-3 p-3 rounded-xl text-xs font-bold"></div>
-          <div class="mt-6 overflow-x-auto"><table class="w-full text-left text-sm text-gray-600"><thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs"><tr><th class="p-3">Catégorie</th><th class="p-3">Titre</th><th class="p-3">Format</th><th class="p-3">Chemin GitHub</th><th class="p-3">Action</th></tr></thead><tbody id="admin-resource-table-body" class="divide-y divide-gray-100"></tbody></table></div>
-          <p class="mt-3 text-xs text-gray-500">Les modifications de cette session sont préparées dans le navigateur. Elles ne sont publiées pour les étudiants qu'après remplacement de <code>resources.json</code> dans le dépôt GitHub.</p>
+          <div id="resource-form-msg" class="hidden mt-3 p-3 rounded-xl text-xs font-bold" role="status" aria-live="polite"></div>
+          <div class="mt-6 overflow-x-auto"><table class="w-full text-left text-sm text-gray-600"><thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs"><tr><th class="p-3">Catégorie</th><th class="p-3">Titre</th><th class="p-3">Format</th><th class="p-3">Fichier GitHub</th><th class="p-3">Action</th></tr></thead><tbody id="admin-resource-table-body" class="divide-y divide-gray-100"></tbody></table></div>
+          <p class="mt-3 text-xs text-gray-500">Le téléversement nécessite le service Cloudflare Worker configuré avec un jeton GitHub stocké côté serveur. Le code GitHub privé n'est jamais placé dans cette page.</p>
         </section>
 
         <!-- Formulaire d'ajout / modification d'une note -->
@@ -922,6 +923,9 @@
     // Le fichier resources.json est publié à la racine du dépôt GitHub Pages.
     const DEFAULT_RESOURCES = { cours: [], td: [], tp: [] };
     let resourcesData = { cours: [], td: [], tp: [] };
+    // Après déploiement du Cloudflare Worker, remplacez cette URL par son adresse workers.dev.
+    const RESOURCE_UPLOAD_API = 'https://CONFIGUREZ-VOTRE-WORKER.workers.dev';
+    const MAX_RESOURCE_FILE_SIZE = 15 * 1024 * 1024;
 
     function escapeHTML(value) {
       return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
@@ -985,33 +989,87 @@
       renderAdminResources();
     }
 
-    function handleAddResource(event) {
+    function showResourceMessage(message, type = 'success') {
+      const msg = document.getElementById('resource-form-msg');
+      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold border ' + (type === 'error'
+        ? 'bg-red-100 text-red-800 border-red-200'
+        : type === 'warning' ? 'bg-amber-100 text-amber-800 border-amber-200'
+        : 'bg-green-100 text-green-800 border-green-200');
+      msg.textContent = message;
+      msg.classList.remove('hidden');
+    }
+
+    function expectedExtension(format) {
+      return ({ pdf: ['.pdf'], matlab: ['.m'], simulink: ['.slx'], excel: ['.xlsx', '.xls'] })[format] || [];
+    }
+
+    async function handleAddResource(event) {
       event.preventDefault();
       const category = document.getElementById('resource-category').value;
       const title = document.getElementById('resource-title').value.trim();
       const format = document.getElementById('resource-format').value;
-      const rawPath = document.getElementById('resource-path').value.trim();
-      const path = safeRepoPath(rawPath, category);
-      const msg = document.getElementById('resource-form-msg');
-      if (!title || !path) {
-        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
-        msg.textContent = `Chemin invalide. Pour cette catégorie, le chemin doit commencer par files/${category}/ et ne doit pas être un lien web.`;
-        msg.classList.remove('hidden');
+      const file = document.getElementById('resource-file').files[0];
+      const password = document.getElementById('resource-upload-password').value;
+      const submit = document.getElementById('resource-submit-btn');
+
+      if (!/^https:\/\//i.test(RESOURCE_UPLOAD_API) || RESOURCE_UPLOAD_API.includes('CONFIGUREZ-VOTRE-WORKER')) {
+        showResourceMessage('Le service de téléversement n’est pas encore configuré. Déployez le Cloudflare Worker puis renseignez son URL dans RESOURCE_UPLOAD_API.', 'warning');
         return;
       }
-      const duplicate = resourcesData[category].some(item => item.path === path);
-      if (duplicate) {
-        msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
-        msg.textContent = 'Ce chemin de fichier existe déjà dans cette catégorie.';
-        msg.classList.remove('hidden');
+      if (!title || !file || !password) {
+        showResourceMessage('Veuillez renseigner le titre, choisir un fichier et saisir le code d’envoi administrateur.', 'error');
         return;
       }
-      resourcesData[category].unshift({ id: Date.now(), title, format, path, date: new Date().toLocaleDateString('fr-FR') });
-      renderAllResources();
-      document.getElementById('resource-form').reset();
-      msg.className = 'mt-3 p-3 rounded-xl text-xs font-bold bg-green-100 text-green-800 border border-green-200';
-      msg.textContent = `Ressource « ${title} » ajoutée. Téléchargez ensuite resources.json et publiez-le dans GitHub.`;
-      msg.classList.remove('hidden');
+      if (file.size > MAX_RESOURCE_FILE_SIZE) {
+        showResourceMessage('Le fichier dépasse la limite de 15 Mo. Réduisez sa taille puis recommencez.', 'error');
+        return;
+      }
+      const filename = file.name.toLowerCase();
+      if (!expectedExtension(format).some(ext => filename.endsWith(ext))) {
+        showResourceMessage('L’extension du fichier ne correspond pas au format sélectionné.', 'error');
+        return;
+      }
+      if (category === 'cours' && format !== 'pdf') {
+        showResourceMessage('Pour les supports de cours, veuillez sélectionner un fichier PDF.', 'error');
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = '⏳ Téléversement en cours…';
+      try {
+        const base64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = () => reject(new Error('Impossible de lire le fichier sélectionné.'));
+          reader.onload = () => resolve(String(reader.result).split(',')[1] || '');
+          reader.readAsDataURL(file);
+        });
+        const response = await fetch(RESOURCE_UPLOAD_API.replace(/\/$/, '') + '/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + password },
+          body: JSON.stringify({ category, title, format, filename: file.name, contentBase64: base64 })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || `Erreur du serveur (${response.status}).`);
+        if (result.resources) {
+          resourcesData = {
+            cours: Array.isArray(result.resources.cours) ? result.resources.cours : [],
+            td: Array.isArray(result.resources.td) ? result.resources.td : [],
+            tp: Array.isArray(result.resources.tp) ? result.resources.tp : []
+          };
+        } else {
+          resourcesData[category].unshift(result.resource);
+        }
+        renderAllResources();
+        document.getElementById('resource-title').value = '';
+        document.getElementById('resource-file').value = '';
+        document.getElementById('resource-upload-password').value = '';
+        showResourceMessage(`Le fichier « ${file.name} » a été envoyé dans GitHub et publié dans la page ${category.toUpperCase()}.`, 'success');
+      } catch (error) {
+        showResourceMessage(error.message || 'Échec du téléversement. Vérifiez la configuration du service.', 'error');
+      } finally {
+        submit.disabled = false;
+        submit.textContent = '⬆️ Téléverser et publier';
+      }
     }
 
     function renderAdminResources() {
