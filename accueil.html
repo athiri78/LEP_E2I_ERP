@@ -57,6 +57,9 @@
           🔬 Travaux Pratiques (TP)
         </button>
         <button id="nav-admin" onclick="navigateTo('admin')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-bold text-amber-300 hover:text-white hover:bg-amber-600 transition border border-amber-400 border-opacity-40">
+          🔐 Administration
+        </button>
+        <button id="nav-admin" onclick="navigateTo('admin')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-bold text-amber-300 hover:text-white hover:bg-amber-600 transition border border-amber-400 border-opacity-40">
           🔐 Admin
         </button>
       </nav>
@@ -169,6 +172,22 @@
                 </p>
                 <button onclick="navigateTo('tp')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl text-sm transition">
                   Ouvrir le tableau TP PDF →
+                </button>
+              </div>
+            </div>
+
+            <!-- Admin Card -->
+            <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div class="bg-gradient-to-br from-slate-700 to-indigo-900 p-6 text-white text-center">
+                <div class="text-5xl mb-2">🔐</div>
+                <h3 class="text-xl font-bold">Administration</h3>
+              </div>
+              <div class="p-6 flex-1 flex flex-col justify-between">
+                <p class="text-gray-600 text-sm mb-4">
+                  Espace enseignant pour stocker les noms des étudiants et leurs notes, calculer les moyennes et exporter le relevé complet vers Excel.
+                </p>
+                <button onclick="navigateTo('admin')" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2.5 rounded-xl text-sm transition">
+                  Ouvrir l'Espace Admin →
                 </button>
               </div>
             </div>
@@ -719,6 +738,222 @@
 
       </div>
     </div>
+    <!-- ========================================== -->
+    <!-- 5. PAGE ADMINISTRATION (GESTION DES NOTES) -->
+    <!-- ========================================== -->
+    <div id="page-admin" class="page-view hidden py-10 px-4">
+      <div class="max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-slate-800 via-indigo-900 to-blue-900 text-white rounded-2xl p-8 mb-8 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-white bg-opacity-10 rounded-2xl flex items-center justify-center text-3xl backdrop-blur shadow-inner">
+              🔐
+            </div>
+            <div>
+              <div class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-900 mb-2">
+                Espace Enseignant / Administration
+              </div>
+              <h1 class="text-3xl font-black">Gestion des Étudiants et des Notes</h1>
+              <p class="text-blue-200 text-sm">LPE : Électronique et Informatique Industrielle (E2I) • Module Énergie Renouvelable Photovoltaïque</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="exportGradesCSV()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow flex items-center gap-2 transition">
+              <span>📥</span> Exporter vers Excel (CSV)
+            </button>
+            <button onclick="window.print()" class="px-4 py-2.5 bg-white bg-opacity-20 hover:bg-opacity-30 text-white rounded-xl text-xs font-bold backdrop-blur transition flex items-center gap-2">
+              <span>🖨️</span> Imprimer
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-black">
+              👥
+            </div>
+            <div>
+              <div id="kpi-total-students" class="text-2xl font-black text-gray-800">0</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Étudiants enregistrés</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-black">
+              📈
+            </div>
+            <div>
+              <div id="kpi-avg-score" class="text-2xl font-black text-gray-800">0 / 20</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Moyenne de la promo</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl font-black">
+              🎯
+            </div>
+            <div>
+              <div id="kpi-success-rate" class="text-2xl font-black text-gray-800">0%</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Taux de réussite (≥ 10)</div>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl font-black">
+              🏆
+            </div>
+            <div>
+              <div id="kpi-max-score" class="text-2xl font-black text-gray-800">0 / 20</div>
+              <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Note maximale</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulaire d'ajout / modification d'une note -->
+        <div class="bg-white rounded-2xl border border-indigo-200 p-6 mb-8 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+              <span>✍️</span> <span id="admin-form-title">Enregistrer un étudiant et sa note</span>
+            </h2>
+            <span class="text-xs text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full font-medium">
+              ⚡ Les passages du QCM en ligne sont également sauvegardés ici automatiquement
+            </span>
+          </div>
+
+          <form id="admin-grade-form" onsubmit="handleSaveGrade(event)" class="space-y-4">
+            <input type="hidden" id="admin-record-id" value="">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div class="md:col-span-2">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Nom complet de l'étudiant *</label>
+                <input
+                  id="admin-student-name"
+                  type="text"
+                  required
+                  placeholder="Ex : Oussama Benani"
+                  class="w-full px-3 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Note sur 20 *</label>
+                <input
+                  id="admin-student-score"
+                  type="number"
+                  min="0"
+                  max="20"
+                  step="0.25"
+                  required
+                  placeholder="Ex : 15.5"
+                  class="w-full px-3 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none font-bold text-indigo-900"
+                >
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Type d'évaluation *</label>
+                <select
+                  id="admin-exam-type"
+                  class="w-full px-3 py-2.5 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white"
+                >
+                  <option value="QCM Photovoltaïque">QCM Photovoltaïque</option>
+                  <option value="Contrôle Continu">Contrôle Continu</option>
+                  <option value="Examen Final">Examen Final</option>
+                  <option value="Banc d'essai TP">Banc d'essai TP</option>
+                  <option value="Projet TD">Projet TD</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+              <div class="md:col-span-3">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Remarque / Commentaire pédagogique (Optionnel)</label>
+                <input
+                  id="admin-comment"
+                  type="text"
+                  placeholder="Ex : Très bonne assimilation du dimensionnement autonome et des batteries"
+                  class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+              </div>
+              <div class="flex gap-2">
+                <button
+                  type="submit"
+                  id="admin-submit-btn"
+                  class="flex-1 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5"
+                >
+                  <span>💾</span> Enregistrer la note
+                </button>
+                <button
+                  type="button"
+                  id="admin-cancel-btn"
+                  onclick="resetGradeForm()"
+                  class="hidden py-2.5 px-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-xs rounded-xl transition"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div id="admin-form-msg" class="hidden mt-3 p-3 rounded-xl text-xs font-bold"></div>
+        </div>
+
+        <!-- Tableau des Notes & Filtres -->
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+          <div class="p-5 bg-gray-50 border-b flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <h3 class="font-bold text-base text-gray-800">📋 Relevé des notes – Filière LPE E2I</h3>
+              <span id="admin-table-badge" class="px-3 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">0 note(s)</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+              <!-- Search bar -->
+              <div class="relative flex-1 md:w-64">
+                <input
+                  id="admin-search-input"
+                  type="text"
+                  oninput="renderAdminTable()"
+                  placeholder="Rechercher un étudiant..."
+                  class="w-full pl-9 pr-3 py-1.5 border rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+                <span class="absolute left-3 top-2 text-xs text-gray-400">🔍</span>
+              </div>
+
+              <!-- Filter select -->
+              <select
+                id="admin-filter-status"
+                onchange="renderAdminTable()"
+                class="px-3 py-1.5 border rounded-xl text-xs bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none font-medium"
+              >
+                <option value="all">Tous les statuts</option>
+                <option value="passed">Validé (≥ 10/20)</option>
+                <option value="failed">Ajourné (&lt; 10/20)</option>
+              </select>
+
+              <button onclick="clearAllGrades()" class="px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 border border-red-200 rounded-xl transition font-semibold" title="Réinitialiser les données">
+                🔄 Réinitialiser
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-600">
+              <thead class="bg-gray-100 text-gray-700 uppercase font-semibold text-xs border-b">
+                <tr>
+                  <th class="p-3.5">Étudiant</th>
+                  <th class="p-3.5">Évaluation</th>
+                  <th class="p-3.5 text-center">Note / 20</th>
+                  <th class="p-3.5 text-center">Pourcentage</th>
+                  <th class="p-3.5">Décision / Statut</th>
+                  <th class="p-3.5">Date & Heure</th>
+                  <th class="p-3.5">Observation</th>
+                  <th class="p-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body" class="divide-y divide-gray-100">
+                <!-- Rempli par JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </main>
 
   <!-- Modal Authentification Admin (Mot de passe protégé) -->
@@ -795,6 +1030,7 @@
         <button onclick="navigateTo('qcm')" class="hover:text-white">QCM</button>
         <button onclick="navigateTo('cours')" class="hover:text-white">Tableau TD</button>
         <button onclick="navigateTo('tp')" class="hover:text-white">Tableau TP</button>
+        <button onclick="navigateTo('admin')" class="hover:text-white text-amber-300 font-bold">🔐 Administration</button>
         <button onclick="navigateTo('admin')" class="hover:text-white text-amber-300 font-bold">🔐 Admin</button>
       </div>
     </div>
@@ -1038,7 +1274,7 @@
     id: 1,
     title: "TD 1 : Caractérisation de la cellule photovoltaïque",
     format: "pdf",
-    url: "https://drive.google.com/file/d/VOTRE_LIEN_ICI/view?usp=sharing",
+    url: "https://drive.google.com/",
     date: "16/11/2026"
   },
   
@@ -1559,6 +1795,23 @@
 
       document.getElementById('result-student').textContent = `Candidat : ${studentName}`;
       document.getElementById('result-score').textContent = score;
+
+      // Enregistrement automatique dans la base de données administrative
+      const autoGradeRecord = {
+        id: Date.now(),
+        name: studentName,
+        score: score,
+        type: "QCM Photovoltaïque (20 Q)",
+        date: new Date().toLocaleDateString('fr-FR') + ' ' + new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+        note: `${percentage}% de réussite • Mention ${score >= 16 ? 'Très Bien' : score >= 14 ? 'Bien' : score >= 12 ? 'Assez Bien' : score >= 10 ? 'Passable' : 'Ajourné'}`
+      };
+      studentGrades.unshift(autoGradeRecord);
+      saveAdminGrades();
+
+      const syncText = document.getElementById('qcm-admin-sync-text');
+      if (syncText) {
+        syncText.textContent = `✅ Note enregistrée pour ${studentName} : ${score}/20 (${percentage}%) dans l'Espace Administration !`;
+      }
 
       // Enregistrement automatique dans la base de données administrative
       const autoGradeRecord = {
